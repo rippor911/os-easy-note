@@ -4,6 +4,7 @@ import process from 'node:process'
 
 const root = process.cwd()
 const docsDir = path.join(root, 'docs')
+const orderConfigFile = path.join(root, 'content-order.json')
 const warnings = []
 const errors = []
 const sectionIndexNames = new Set(['index.md', 'main.md', 'README.md'])
@@ -74,6 +75,45 @@ function validateSectionIndexes() {
   }
 }
 
+function validateOrderConfig() {
+  if (!fs.existsSync(orderConfigFile)) return
+
+  let config
+  try {
+    config = JSON.parse(fs.readFileSync(orderConfigFile, 'utf8').replace(/^\uFEFF/, ''))
+  } catch (error) {
+    errors.push(`content-order.json is not valid JSON: ${error.message}`)
+    return
+  }
+
+  for (const page of config.top || []) {
+    const target = path.join(docsDir, page)
+    if (!fs.existsSync(target)) {
+      warnings.push(`content-order.json top entry does not exist: ${page}`)
+    }
+  }
+
+  for (const section of config.sections || []) {
+    if (!section.dir) {
+      warnings.push('content-order.json has a section without dir.')
+      continue
+    }
+
+    const sectionDir = path.join(docsDir, section.dir)
+    if (!fs.existsSync(sectionDir)) {
+      warnings.push(`content-order.json section dir does not exist: ${section.dir}`)
+      continue
+    }
+
+    for (const page of section.pages || []) {
+      const target = path.join(sectionDir, page)
+      if (!fs.existsSync(target)) {
+        warnings.push(`content-order.json page does not exist: ${section.dir}/${page}`)
+      }
+    }
+  }
+}
+
 if (!fs.existsSync(docsDir)) {
   errors.push('docs/ directory does not exist.')
 } else {
@@ -92,6 +132,7 @@ if (!fs.existsSync(docsDir)) {
   }
 
   validateSectionIndexes()
+  validateOrderConfig()
 }
 
 if (warnings.length) {

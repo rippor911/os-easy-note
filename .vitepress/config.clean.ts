@@ -5,9 +5,19 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url))
 const docsDir = path.join(projectRoot, 'docs')
+const orderConfigFile = path.join(projectRoot, 'content-order.json')
 const ignoredFiles = new Set(['_template.md'])
 const sectionIndexNames = ['index.md', 'main.md', 'README.md']
 const enableSearch = process.env.VP_DISABLE_SEARCH !== '1'
+
+interface SidebarOrderConfig {
+  top?: string[]
+  sections?: Array<{
+    dir: string
+    text?: string
+    pages?: string[]
+  }>
+}
 
 function isMarkdownFile(fileName: string) {
   return fileName.endsWith('.md') && !ignoredFiles.has(fileName)
@@ -23,7 +33,36 @@ function readTitle(file: string) {
   const source = fs.readFileSync(file, 'utf8')
   const frontmatterTitle = source.match(/^---[\s\S]*?\ntitle:\s*["']?(.+?)["']?\s*\n[\s\S]*?---/)
   const headingTitle = source.match(/^#\s+(.+)$/m)
-  return frontmatterTitle?.[1]?.trim() || headingTitle?.[1]?.trim() || path.basename(file, '.md')
+  return cleanDisplayTitle(frontmatterTitle?.[1]?.trim() || headingTitle?.[1]?.trim() || path.basename(file, '.md'))
+}
+
+function cleanDisplayTitle(title: string) {
+  return title
+    .replace(/^\d+(?:[_\-.]\d+)*\s*/, '')
+    .replace(/^\d+[_\-.]\s*/, '')
+    .trim()
+}
+
+function readOrderConfig(): SidebarOrderConfig {
+  if (!fs.existsSync(orderConfigFile)) return {}
+
+  try {
+    return JSON.parse(fs.readFileSync(orderConfigFile, 'utf8').replace(/^\uFEFF/, '')) as SidebarOrderConfig
+  } catch {
+    return {}
+  }
+}
+
+function byConfiguredOrder<T>(items: T[], order: string[] | undefined, getKey: (item: T) => string) {
+  if (!order?.length) return items
+
+  const rank = new Map(order.map((key, index) => [key, index]))
+  return [...items].sort((a, b) => {
+    const aRank = rank.get(getKey(a)) ?? Number.MAX_SAFE_INTEGER
+    const bRank = rank.get(getKey(b)) ?? Number.MAX_SAFE_INTEGER
+    if (aRank !== bRank) return aRank - bRank
+    return getKey(a).localeCompare(getKey(b), 'zh-Hans-CN')
+  })
 }
 
 function listMarkdownFiles(dir: string): string[] {
@@ -53,24 +92,38 @@ function readableSectionTitle(entryName: string, indexFile?: string) {
 function buildSidebar(): DefaultTheme.SidebarItem[] {
   if (!fs.existsSync(docsDir)) return []
 
+  const orderConfig = readOrderConfig()
+  const sectionConfig = new Map(orderConfig.sections?.map((section) => [section.dir, section]) ?? [])
   const entries = fs.readdirSync(docsDir, { withFileTypes: true })
-  const topLevelPages = entries
+  const topLevelPageFiles = entries
     .filter((entry) => entry.isFile() && isMarkdownFile(entry.name) && entry.name !== 'index.md')
     .map((entry) => path.join(docsDir, entry.name))
+
+  const topLevelPages = byConfiguredOrder(topLevelPageFiles, orderConfig.top, (file) => path.basename(file))
     .map((file) => ({ text: readTitle(file), link: normalizeRoute(file) }))
 
-  const groups = entries
-    .filter((entry) => entry.isDirectory())
+  const sectionEntries = byConfiguredOrder(
+    entries.filter((entry) => entry.isDirectory()),
+    orderConfig.sections?.map((section) => section.dir),
+    (entry) => entry.name
+  )
+
+  const groups = sectionEntries
     .map((entry) => {
       const sectionDir = path.join(docsDir, entry.name)
       const files = listMarkdownFiles(sectionDir)
       if (!files.length) return null
 
+      const config = sectionConfig.get(entry.name)
       const indexFile = findSectionIndex(files)
-      const childFiles = files.filter((file) => file !== indexFile)
+      const childFiles = byConfiguredOrder(
+        files.filter((file) => file !== indexFile),
+        config?.pages?.filter((page) => !sectionIndexNames.includes(page)),
+        (file) => path.relative(sectionDir, file).replace(/\\/g, '/')
+      )
 
       return {
-        text: readableSectionTitle(entry.name, indexFile),
+        text: config?.text || readableSectionTitle(entry.name, indexFile),
         link: indexFile ? normalizeRoute(indexFile) : undefined,
         collapsed: false,
         items: childFiles.map((file) => ({

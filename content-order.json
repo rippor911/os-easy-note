@@ -1,0 +1,43 @@
+﻿{
+  "top": [
+    "knowledge-map.md",
+    "tags.md",
+    "progress.md"
+  ],
+  "sections": [
+    {
+      "dir": "OS Boot",
+      "text": "OS Boot",
+      "pages": [
+        "main.md",
+        "1_0 \u5f15\u8a00.md",
+        "2_0 Boot.md",
+        "3_0 \u7a0b\u5e8f\u8fd0\u884c\u57fa\u672c\u8fc7\u7a0b.md"
+      ]
+    },
+    {
+      "dir": "\u5185\u5b58\u7ba1\u7406",
+      "text": "\u5185\u5b58\u7ba1\u7406",
+      "pages": [
+        "main.md",
+        "3_1\u5b58\u50a8\u7ba1\u7406.md",
+        "3_2 \u9875\u5f0f\u7ba1\u7406\u57fa\u7840.md",
+        "3_3 \u6bb5\u5f0f\u7ba1\u7406.md",
+        "3_4 \u865a\u62df\u5185\u5b58\u7ba1\u7406.md",
+        "3_5 \u8bf7\u6c42\u5f0f\u5206\u9875\u7cfb\u7edf.md",
+        "3_6 \u5185\u5b58\u7ba1\u7406\u5b9e\u4f8b.md",
+        "3_7 \u9875\u8868\u81ea\u6620\u5c04.md"
+      ]
+    },
+    {
+      "dir": "\u8fdb\u7a0b\u4e0e\u7ebf\u7a0b",
+      "text": "\u8fdb\u7a0b\u4e0e\u7ebf\u7a0b",
+      "pages": [
+        "main.md",
+        "4_1 \u8fdb\u7a0b\u72b6\u6001\u4e0e\u63a7\u5236.md",
+        "4_2 \u7ebf\u7a0b.md",
+        "4_3 \u540c\u6b65\u4e0e\u4e92\u65a5.md"
+      ]
+    }
+  ]
+}

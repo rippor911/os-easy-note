@@ -28,6 +28,14 @@ npm run check:docs
 
 所有笔记都放在 `docs/` 下面。
 
+注意：`docs/` 下面的 Markdown 都会成为访客可访问的网页。维护者说明、编辑规范、部署说明这类只给自己看的文档，不要放进 `docs/`，应放在项目根目录。
+
+当前维护者文档包括：
+
+- `EDITING_GUIDE.zh-CN.md`：中文编辑方法。
+- `DOC_FORMAT.md`：文档格式约定。
+- `DEPLOY_VERCEL.zh-CN.md`：Vercel 部署说明。
+
 推荐结构：
 
 ```text
@@ -97,7 +105,90 @@ npm run new:note -- memory "Page Replacement"
 
 注意：脚本更适合英文 slug。如果你想使用中文路径，直接手动新建 Markdown 更直观。
 
-## 四、推荐页面模板
+## 四、设置章节顺序和显示名称
+
+侧边栏顺序不依赖文件名前缀编号，而是由项目根目录的 `content-order.json` 控制。
+
+例如：
+
+```json
+{
+  "top": [
+    "knowledge-map.md",
+    "tags.md",
+    "progress.md"
+  ],
+  "sections": [
+    {
+      "dir": "OS Boot",
+      "text": "OS Boot",
+      "pages": [
+        "main.md",
+        "1_0 引言.md",
+        "2_0 Boot.md"
+      ]
+    },
+    {
+      "dir": "内存管理",
+      "text": "内存管理",
+      "pages": [
+        "main.md",
+        "3_1存储管理.md",
+        "3_2 页式管理基础.md"
+      ]
+    }
+  ]
+}
+```
+
+字段说明：
+
+- `top`：控制 `docs/` 根目录下页面的显示顺序。
+- `sections`：控制章节目录的显示顺序。
+- `dir`：真实目录名，必须和 `docs/` 下的目录名一致。
+- `text`：访客看到的章节名称，可以和真实目录名不同。
+- `pages`：该章节下页面的显示顺序。
+
+如果某个页面没有写进 `pages`，它仍然会显示，只是排在已配置页面之后。
+
+已有文件名里的编号不会作为侧边栏标题展示。例如：
+
+```text
+3_2 页式管理基础.md
+```
+
+侧边栏会尽量显示为：
+
+```text
+页式管理基础
+```
+
+更推荐的长期做法是：文件名使用稳定 slug，显示顺序交给 `content-order.json`。
+
+例如：
+
+```text
+docs/内存管理/paging.md
+docs/内存管理/virtual-memory.md
+docs/内存管理/page-fault.md
+```
+
+然后在 `content-order.json` 中排序：
+
+```json
+{
+  "dir": "内存管理",
+  "text": "内存管理",
+  "pages": [
+    "main.md",
+    "paging.md",
+    "virtual-memory.md",
+    "page-fault.md"
+  ]
+}
+```
+
+## 五、推荐页面模板
 
 frontmatter 是可选的，但推荐写，方便标签筛选和复习管理。
 
@@ -138,7 +229,7 @@ review: 2026-04-17
 - [分页与 TLB](./3_2 页式管理基础.md)
 ```
 
-## 五、链接怎么写
+## 六、链接怎么写
 
 优先使用相对链接。
 
@@ -162,7 +253,7 @@ review: 2026-04-17
 
 不要手写很长的绝对 URL，后续部署到 GitHub Pages 时更容易出问题。
 
-## 六、如何写标签
+## 七、如何写标签
 
 标签写在 frontmatter 的 `tags` 字段里。
 
@@ -184,7 +275,7 @@ tags: [memory, kernel, exam, tricky, 高频考点]
 - `tricky`：容易混淆的概念。
 - `高频考点`：需要反复复习的重点。
 
-## 七、如何插入学习组件
+## 八、如何插入学习组件
 
 ### 1. 折叠答案
 
@@ -256,7 +347,7 @@ flowchart TD
 ```
 ````
 
-## 八、如何编辑题库
+## 九、如何编辑题库
 
 题库放在 `quizzes/` 下。
 
@@ -297,7 +388,7 @@ quizzes/fs.json
 
 还需要在 `components/quizBank.ts` 里导入并注册。
 
-## 九、如何避免 404
+## 十、如何避免 404
 
 最重要的是这几条：
 
@@ -313,7 +404,7 @@ quizzes/fs.json
 3. 链接里的文件名是否和真实文件名完全一致。
 4. 中文路径是否被浏览器或编辑器错误转码。
 
-## 十、推荐编辑流程
+## 十一、推荐编辑流程
 
 每次整理笔记时，可以按这个顺序：
 
@@ -325,7 +416,7 @@ quizzes/fs.json
 6. 运行 `npm run check:docs`。
 7. 本地运行 `npm run dev` 预览。
 
-## 十一、当前项目对格式的态度
+## 十二、当前项目对格式的态度
 
 这个项目故意把格式要求设计得很宽松：
 

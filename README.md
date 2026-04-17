@@ -31,7 +31,7 @@ npm run new:note -- memory "Page Table Self Mapping"
 
 ## 编辑方法
 
-中文编辑手册见 `EDITING_GUIDE.zh-CN.md`，站内简版见 `docs/editing-guide.md`。
+中文编辑手册见 `EDITING_GUIDE.zh-CN.md`。它放在项目根目录，不在 `docs/` 中，因此不会作为访客页面发布。
 
 ## Markdown 页面模板
 
