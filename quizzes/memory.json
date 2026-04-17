@@ -28,5 +28,65 @@
     "explanation": "8 KiB = 8192 Byte = 2^13 Byte，因此页内偏移为 13 位。",
     "tags": ["memory", "exam"],
     "difficulty": "easy"
+  },
+  {
+    "id": "memory-self-map-01",
+    "title": "页目录自映射的核心设置",
+    "question": "在 32 位两级页表中，页目录自映射最核心的一步是什么？",
+    "options": [
+      { "label": "A", "text": "把所有页表页复制到一段连续的物理内存中" },
+      { "label": "B", "text": "让某个页目录项指向页目录自己所在的物理页框" },
+      { "label": "C", "text": "让每个用户页都同时映射到内核空间" },
+      { "label": "D", "text": "把页内偏移位数扩大，使页表项可以直接寻址" }
+    ],
+    "answer": "B",
+    "explanation": "自映射的关键是选一个 PDE，把它填成页目录自身的物理页框号。这样访问该 PDE 覆盖的虚拟地址区间时，第一次页表遍历会回到页目录，从而形成页表窗口。",
+    "tags": ["memory", "paging", "self-map"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-self-map-02",
+    "title": "自映射窗口的大小",
+    "question": "32 位两级页表、4 KiB 页、每个页表项 4 Byte，若选一个 PDE 做自映射，它通常会占用多大的虚拟地址区间作为页表窗口？",
+    "options": [
+      { "label": "A", "text": "4 KiB" },
+      { "label": "B", "text": "1 MiB" },
+      { "label": "C", "text": "4 MiB" },
+      { "label": "D", "text": "4 GiB" }
+    ],
+    "answer": "C",
+    "explanation": "一个 PDE 覆盖一个页表页能映射的范围：1024 个 PTE × 4 KiB = 4 MiB。自映射会把这 4 MiB 虚拟地址区间用作页表窗口。",
+    "tags": ["memory", "paging", "self-map", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-self-map-03",
+    "title": "PTE 虚拟地址计算",
+    "question": "若自映射索引 r = 1023，则页表窗口起始地址为 0xFFC00000。某虚拟地址的页目录索引为 2，页表索引为 3，则它对应 PTE 的虚拟地址是多少？",
+    "options": [
+      { "label": "A", "text": "0xFFC0200C" },
+      { "label": "B", "text": "0xFFC03008" },
+      { "label": "C", "text": "0xFFFFF00C" },
+      { "label": "D", "text": "0x00002003" }
+    ],
+    "answer": "A",
+    "explanation": "PTE_addr = 0xFFC00000 + PDE_index × 4096 + PTE_index × 4 = 0xFFC00000 + 2 × 0x1000 + 3 × 4 = 0xFFC0200C。",
+    "tags": ["memory", "paging", "self-map", "calculation"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-self-map-04",
+    "title": "自映射不等于创建页表页",
+    "question": "建立页目录自映射后，下面哪种说法最准确？",
+    "options": [
+      { "label": "A", "text": "所有页表页都会立刻被分配出来" },
+      { "label": "B", "text": "所有虚拟地址都会自动变成有效映射" },
+      { "label": "C", "text": "页目录和已经存在的页表页可以通过固定虚拟窗口访问" },
+      { "label": "D", "text": "TLB 中所有旧映射都会自动消失，不需要内核处理" }
+    ],
+    "answer": "C",
+    "explanation": "自映射只是提供访问页目录和已有页表页的虚拟窗口，并不会自动分配尚不存在的页表页。修改页表项后，内核仍需按体系结构要求处理 TLB 失效。",
+    "tags": ["memory", "paging", "self-map", "tricky"],
+    "difficulty": "medium"
   }
 ]
