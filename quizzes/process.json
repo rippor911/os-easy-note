@@ -1,0 +1,32 @@
+[
+  {
+    "id": "process-thread-01",
+    "title": "进程与线程",
+    "question": "关于进程和线程，下列说法最准确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "线程是资源分配的基本单位，进程是 CPU 调度的基本单位" },
+      { "label": "B", "text": "进程是资源分配的基本单位，线程是 CPU 调度的基本单位" },
+      { "label": "C", "text": "同一进程内的线程不共享地址空间" },
+      { "label": "D", "text": "线程切换一定比系统调用开销更大" }
+    ],
+    "answer": "B",
+    "explanation": "现代操作系统通常把进程作为资源拥有和保护边界，把线程作为调度执行单元。同进程线程共享地址空间，因此通信方便但并发风险更高。",
+    "tags": ["process", "concurrency", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-mode-switch-01",
+    "title": "陷入内核与进程切换",
+    "question": "用户进程执行系统调用时，下面哪项描述更准确？",
+    "options": [
+      { "label": "A", "text": "一定发生进程上下文切换" },
+      { "label": "B", "text": "一定切换到另一个进程运行" },
+      { "label": "C", "text": "会从用户态进入内核态，但不一定发生进程切换" },
+      { "label": "D", "text": "不会保存任何寄存器现场" }
+    ],
+    "answer": "C",
+    "explanation": "系统调用会触发受控的特权级切换，进入内核执行服务例程；是否调度其他进程取决于系统调用行为、阻塞与调度策略。",
+    "tags": ["kernel", "tricky", "exam"],
+    "difficulty": "medium"
+  }
+]

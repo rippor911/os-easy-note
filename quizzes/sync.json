@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sync-mutex-semaphore-01",
+    "title": "Mutex 与 Semaphore",
+    "question": "关于 Mutex 和 Semaphore，下列说法最合适的是哪一项？",
+    "options": [
+      { "label": "A", "text": "Mutex 更强调互斥所有权，Semaphore 更强调计数和同步信号" },
+      { "label": "B", "text": "Semaphore 只能取 0 或 1" },
+      { "label": "C", "text": "Mutex 不能用于保护临界区" },
+      { "label": "D", "text": "二者没有任何语义差异" }
+    ],
+    "answer": "A",
+    "explanation": "Mutex 通常用于保护临界区并强调加锁者释放；Semaphore 可以表达资源数量，也可作为线程间同步信号。",
+    "tags": ["concurrency", "tricky", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "sync-condition-variable-01",
+    "title": "条件变量",
+    "question": "使用条件变量等待某个条件时，为什么通常要用 while 而不是 if？",
+    "options": [
+      { "label": "A", "text": "while 的性能一定更好" },
+      { "label": "B", "text": "线程被唤醒后条件可能仍不满足，需要重新检查" },
+      { "label": "C", "text": "if 无法通过编译" },
+      { "label": "D", "text": "条件变量不需要和锁配合" }
+    ],
+    "answer": "B",
+    "explanation": "条件变量可能出现虚假唤醒，或者多个线程竞争导致被唤醒时条件已被其他线程改变，因此需要在循环中重新检查条件。",
+    "tags": ["concurrency", "tricky", "exam"],
+    "difficulty": "medium"
+  }
+]

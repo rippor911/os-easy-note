@@ -1,0 +1,32 @@
+[
+  {
+    "id": "memory-tlb-01",
+    "title": "TLB miss 与缺页",
+    "question": "发生 TLB miss 时，下面哪项一定成立？",
+    "options": [
+      { "label": "A", "text": "该虚拟页一定不在物理内存中" },
+      { "label": "B", "text": "需要查询页表或由硬件/内核继续完成地址转换" },
+      { "label": "C", "text": "一定会触发磁盘 I/O" },
+      { "label": "D", "text": "当前进程一定会被阻塞" }
+    ],
+    "answer": "B",
+    "explanation": "TLB miss 只表示快表中没有缓存该映射。页表项可能有效，此时只需查页表并回填 TLB；只有页表项无效、权限不满足等情况才会进入缺页或保护异常处理。",
+    "tags": ["memory", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-page-offset-01",
+    "title": "页内偏移位数",
+    "question": "页大小为 8 KiB 时，页内偏移字段有多少位？",
+    "options": [
+      { "label": "A", "text": "10 位" },
+      { "label": "B", "text": "12 位" },
+      { "label": "C", "text": "13 位" },
+      { "label": "D", "text": "16 位" }
+    ],
+    "answer": "C",
+    "explanation": "8 KiB = 8192 Byte = 2^13 Byte，因此页内偏移为 13 位。",
+    "tags": ["memory", "exam"],
+    "difficulty": "easy"
+  }
+]
