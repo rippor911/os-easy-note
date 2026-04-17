@@ -31,32 +31,32 @@
   },
   {
     "id": "memory-self-map-01",
-    "title": "页目录自映射的核心设置",
-    "question": "在 32 位两级页表中，页目录自映射最核心的一步是什么？",
+    "title": "自映射与普通页表遍历",
+    "question": "关于页目录自映射，下面哪种说法最准确？",
     "options": [
-      { "label": "A", "text": "把所有页表页复制到一段连续的物理内存中" },
-      { "label": "B", "text": "让某个页目录项指向页目录自己所在的物理页框" },
-      { "label": "C", "text": "让每个用户页都同时映射到内核空间" },
-      { "label": "D", "text": "把页内偏移位数扩大，使页表项可以直接寻址" }
+      { "label": "A", "text": "自映射改变了 MMU 的地址转换规则，使 MMU 能直接识别页表项地址" },
+      { "label": "B", "text": "自映射只是改变某个页目录项的内容，MMU 仍按普通多级页表规则逐级查表" },
+      { "label": "C", "text": "自映射要求所有页表页在物理内存中连续存放，否则无法计算 PTE 地址" },
+      { "label": "D", "text": "自映射建立后，访问页表项不再经过 TLB 和页表权限检查" }
     ],
     "answer": "B",
-    "explanation": "自映射的关键是选一个 PDE，把它填成页目录自身的物理页框号。这样访问该 PDE 覆盖的虚拟地址区间时，第一次页表遍历会回到页目录，从而形成页表窗口。",
-    "tags": ["memory", "paging", "self-map"],
-    "difficulty": "easy"
+    "explanation": "自映射并没有给 MMU 增加新规则。它只是让某个 PDE 指向页目录自己的物理页框，于是访问自映射窗口时，普通页表遍历会自然走到页目录和页表页。",
+    "tags": ["memory", "paging", "self-map", "tricky"],
+    "difficulty": "medium"
   },
   {
     "id": "memory-self-map-02",
-    "title": "自映射窗口的大小",
-    "question": "32 位两级页表、4 KiB 页、每个页表项 4 Byte，若选一个 PDE 做自映射，它通常会占用多大的虚拟地址区间作为页表窗口？",
+    "title": "自映射建立后的映射状态",
+    "question": "把某个 PDE 设为自映射项并刷新 TLB 后，下面哪种理解是正确的？",
     "options": [
-      { "label": "A", "text": "4 KiB" },
-      { "label": "B", "text": "1 MiB" },
-      { "label": "C", "text": "4 MiB" },
-      { "label": "D", "text": "4 GiB" }
+      { "label": "A", "text": "自映射窗口里的每个位置都已经有效，因为所有页表页都会被自动创建" },
+      { "label": "B", "text": "自映射窗口只保证页目录和已经存在的页表页可按公式访问，未分配的页表页仍可能无效" },
+      { "label": "C", "text": "自映射窗口只能访问页目录项，不能访问普通页表项" },
+      { "label": "D", "text": "自映射窗口会减少可用物理内存容量，因为页目录物理页被复制了一份" }
     ],
-    "answer": "C",
-    "explanation": "一个 PDE 覆盖一个页表页能映射的范围：1024 个 PTE × 4 KiB = 4 MiB。自映射会把这 4 MiB 虚拟地址区间用作页表窗口。",
-    "tags": ["memory", "paging", "self-map", "exam"],
+    "answer": "B",
+    "explanation": "自映射提供的是访问页表结构的虚拟窗口，不会自动分配所有页表页。尚未建立的页表页，其对应窗口地址在页表遍历中仍会遇到无效项。",
+    "tags": ["memory", "paging", "self-map", "tricky"],
     "difficulty": "medium"
   },
   {
