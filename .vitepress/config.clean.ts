@@ -15,7 +15,10 @@ interface SidebarOrderConfig {
   sections?: Array<{
     dir: string
     text?: string
-    pages?: string[]
+    pages?: Array<string | {
+      file: string
+      text?: string
+    }>
   }>
 }
 
@@ -38,9 +41,16 @@ function readTitle(file: string) {
 
 function cleanDisplayTitle(title: string) {
   return title
-    .replace(/^\d+(?:[_\-.]\d+)*\s*/, '')
-    .replace(/^\d+[_\-.]\s*/, '')
+    .replace(/^\s*\d+(?:[_\-.]\d+)*(?:\s+|[_\-.]+)?/, '')
     .trim()
+}
+
+function pageOrderKey(page: string | { file: string; text?: string }) {
+  return typeof page === 'string' ? page : page.file
+}
+
+function pageOrderText(page: string | { file: string; text?: string }) {
+  return typeof page === 'string' ? undefined : page.text
 }
 
 function readOrderConfig(): SidebarOrderConfig {
@@ -116,9 +126,17 @@ function buildSidebar(): DefaultTheme.SidebarItem[] {
 
       const config = sectionConfig.get(entry.name)
       const indexFile = findSectionIndex(files)
+      const configuredPages = config?.pages ?? []
+      const configuredPageText = new Map(
+        configuredPages
+          .filter((page) => pageOrderText(page))
+          .map((page) => [pageOrderKey(page), pageOrderText(page) as string])
+      )
       const childFiles = byConfiguredOrder(
         files.filter((file) => file !== indexFile),
-        config?.pages?.filter((page) => !sectionIndexNames.includes(page)),
+        configuredPages
+          .map(pageOrderKey)
+          .filter((page) => !sectionIndexNames.includes(page)),
         (file) => path.relative(sectionDir, file).replace(/\\/g, '/')
       )
 
@@ -127,7 +145,7 @@ function buildSidebar(): DefaultTheme.SidebarItem[] {
         link: indexFile ? normalizeRoute(indexFile) : undefined,
         collapsed: false,
         items: childFiles.map((file) => ({
-          text: readTitle(file),
+          text: configuredPageText.get(path.relative(sectionDir, file).replace(/\\/g, '/')) || readTitle(file),
           link: normalizeRoute(file)
         }))
       } satisfies DefaultTheme.SidebarItem

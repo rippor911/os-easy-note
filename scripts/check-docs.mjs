@@ -105,7 +105,13 @@ function validateOrderConfig() {
       continue
     }
 
-    for (const page of section.pages || []) {
+    for (const pageEntry of section.pages || []) {
+      const page = typeof pageEntry === 'string' ? pageEntry : pageEntry.file
+      if (!page) {
+        warnings.push(`content-order.json section ${section.dir} has a page entry without file.`)
+        continue
+      }
+
       const target = path.join(sectionDir, page)
       if (!fs.existsSync(target)) {
         warnings.push(`content-order.json page does not exist: ${section.dir}/${page}`)

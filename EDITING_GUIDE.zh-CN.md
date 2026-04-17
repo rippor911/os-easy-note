@@ -124,8 +124,8 @@ npm run new:note -- memory "Page Replacement"
       "text": "OS Boot",
       "pages": [
         "main.md",
-        "1_0 引言.md",
-        "2_0 Boot.md"
+        { "file": "1_0 引言.md", "text": "引言" },
+        { "file": "2_0 Boot.md", "text": "Boot" }
       ]
     },
     {
@@ -133,8 +133,8 @@ npm run new:note -- memory "Page Replacement"
       "text": "内存管理",
       "pages": [
         "main.md",
-        "3_1存储管理.md",
-        "3_2 页式管理基础.md"
+        { "file": "3_1存储管理.md", "text": "存储管理" },
+        { "file": "3_2 页式管理基础.md", "text": "页式管理基础" }
       ]
     }
   ]
@@ -147,7 +147,7 @@ npm run new:note -- memory "Page Replacement"
 - `sections`：控制章节目录的显示顺序。
 - `dir`：真实目录名，必须和 `docs/` 下的目录名一致。
 - `text`：访客看到的章节名称，可以和真实目录名不同。
-- `pages`：该章节下页面的显示顺序。
+- `pages`：该章节下页面的显示顺序。可以直接写文件名，也可以写 `{ "file": "真实文件名.md", "text": "访客看到的标题" }`。
 
 如果某个页面没有写进 `pages`，它仍然会显示，只是排在已配置页面之后。
 

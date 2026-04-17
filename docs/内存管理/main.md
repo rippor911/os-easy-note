@@ -1,5 +1,5 @@
 ---
-title: Memory Management
+title: 内存管理
 tags: [memory]
 ---
 
