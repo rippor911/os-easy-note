@@ -88,5 +88,305 @@
     "explanation": "自映射只是提供访问页目录和已有页表页的虚拟窗口，并不会自动分配尚不存在的页表页。修改页表项后，内核仍需按体系结构要求处理 TLB 失效。",
     "tags": ["memory", "paging", "self-map", "tricky"],
     "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-01",
+    "title": "逻辑地址与物理地址",
+    "question": "操作系统把逻辑地址和物理地址分开，最直接的目的是什么？",
+    "options": [
+      { "label": "A", "text": "让程序员直接决定数据在内存条上的物理位置" },
+      { "label": "B", "text": "让程序使用独立地址空间，并由系统完成重定位和保护" },
+      { "label": "C", "text": "保证所有进程访问同一组内存地址" },
+      { "label": "D", "text": "取消硬件参与，完全由应用程序完成地址转换" }
+    ],
+    "answer": "B",
+    "explanation": "逻辑地址让程序不依赖实际装入位置；物理地址由系统和硬件管理，从而支持重定位、隔离和保护。",
+    "tags": ["memory", "address", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-storage-02",
+    "title": "内碎片与外碎片",
+    "question": "关于内碎片和外碎片，下面哪项说法正确？",
+    "options": [
+      { "label": "A", "text": "内碎片是空闲区之间不连续造成的，外碎片是已分配区内部浪费造成的" },
+      { "label": "B", "text": "内碎片是已分配空间中未被使用的部分，外碎片是空闲但难以形成足够大连续区的空间" },
+      { "label": "C", "text": "固定分区只会产生外碎片，不会产生内碎片" },
+      { "label": "D", "text": "动态分区只要有空闲空间总量足够，就一定能满足任意连续内存请求" }
+    ],
+    "answer": "B",
+    "explanation": "内碎片发生在已分配空间内部；外碎片发生在空闲空间之间。动态分区可能因为空闲区分散而无法满足连续空间请求。",
+    "tags": ["memory", "fragmentation", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-storage-03",
+    "title": "动态分区的切分",
+    "question": "动态分区分配时，如果把请求空间切出后剩余空间非常小，常见处理是什么？",
+    "options": [
+      { "label": "A", "text": "必须保留该小空闲区，等待之后精确大小的请求" },
+      { "label": "B", "text": "必须立即执行紧凑，把所有空闲区合并" },
+      { "label": "C", "text": "把整块空闲区分给请求者，避免留下难以利用的小外碎片" },
+      { "label": "D", "text": "拒绝本次分配，因为剩余空间小于请求空间" }
+    ],
+    "answer": "C",
+    "explanation": "过小的剩余区很难再被有效利用，保留下来会增加外碎片和管理开销，所以常把它并入本次分配。",
+    "tags": ["memory", "partition", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-04",
+    "title": "首次适应算法",
+    "question": "首次适应（First Fit）算法的核心策略是什么？",
+    "options": [
+      { "label": "A", "text": "每次都从空闲区表头开始，找第一个足够大的空闲区" },
+      { "label": "B", "text": "每次都找大小最接近请求的空闲区" },
+      { "label": "C", "text": "每次都找最大的空闲区" },
+      { "label": "D", "text": "每次都从上次查找结束位置继续找" }
+    ],
+    "answer": "A",
+    "explanation": "首次适应从头顺序查找第一个满足请求的空闲区。B 是最佳适应，C 是最坏适应，D 是下次适应。",
+    "tags": ["memory", "partition", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-storage-05",
+    "title": "最佳适应的风险",
+    "question": "为什么最佳适应（Best Fit）不一定带来最好的长期内存利用效果？",
+    "options": [
+      { "label": "A", "text": "它每次都会选择最大的空闲区，导致大空闲区被快速消耗" },
+      { "label": "B", "text": "它不允许拆分空闲区，所以无法满足小请求" },
+      { "label": "C", "text": "它可能反复留下很小的剩余空闲区，形成难以利用的外碎片" },
+      { "label": "D", "text": "它只能用于固定分区，不能用于动态分区" }
+    ],
+    "answer": "C",
+    "explanation": "最佳适应追求本次分配后的剩余空间最小，但长期看容易产生许多很小、难以再次利用的外碎片。",
+    "tags": ["memory", "partition", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-06",
+    "title": "伙伴系统",
+    "question": "关于伙伴系统（buddy system），下面哪项说法最准确？",
+    "options": [
+      { "label": "A", "text": "它按任意字节大小精确分配，因此完全没有内部浪费" },
+      { "label": "B", "text": "它按 2 的幂管理块，便于拆分和合并，但可能产生内碎片" },
+      { "label": "C", "text": "它只能通过移动作业来消除外碎片" },
+      { "label": "D", "text": "它要求所有进程共享同一个逻辑地址空间" }
+    ],
+    "answer": "B",
+    "explanation": "伙伴系统把块大小限制为 2 的幂，地址计算和伙伴合并方便；请求大小被向上取整时，可能产生内碎片。",
+    "tags": ["memory", "buddy", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-07",
+    "title": "紧凑与动态重定位",
+    "question": "紧凑技术通常为什么需要动态重定位支持？",
+    "options": [
+      { "label": "A", "text": "因为紧凑会移动作业位置，移动后需要重新建立逻辑地址到物理地址的对应关系" },
+      { "label": "B", "text": "因为紧凑会把所有进程永久写入辅存" },
+      { "label": "C", "text": "因为紧凑会取消逻辑地址，只保留物理地址" },
+      { "label": "D", "text": "因为紧凑只能在程序编译时完成" }
+    ],
+    "answer": "A",
+    "explanation": "紧凑通过移动作业把分散空闲区拼成大空闲区。作业位置变化后，地址转换关系必须能随运行时位置变化而调整。",
+    "tags": ["memory", "compaction", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-08",
+    "title": "覆盖与交换",
+    "question": "关于覆盖（Overlay）和交换（Swapping），下面哪项说法正确？",
+    "options": [
+      { "label": "A", "text": "覆盖由操作系统自动完成，交换必须由程序员手工划分模块" },
+      { "label": "B", "text": "覆盖和交换都只发生在同一个程序内部的不同函数之间" },
+      { "label": "C", "text": "覆盖通常由程序员安排同一程序内部哪些段不同时驻留；交换通常由 OS 在进程之间调入调出" },
+      { "label": "D", "text": "交换只能减少一个程序内部同时驻留内存的代码段数量，不能改变内存中的进程数" }
+    ],
+    "answer": "C",
+    "explanation": "覆盖关注同一程序内部不同时使用的程序段，早期常需程序员安排；交换由 OS 控制，把整个进程地址空间换出或换入，以提高内存利用率和并发度。",
+    "tags": ["memory", "overlay", "swapping", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-storage-09",
+    "title": "交换与 I/O",
+    "question": "为什么正在进行 I/O 且 I/O 缓冲区在用户空间的进程通常不宜直接换出？",
+    "options": [
+      { "label": "A", "text": "因为等待 I/O 的进程一定拥有最高调度优先级" },
+      { "label": "B", "text": "因为设备可能仍要读写该用户缓冲区，换出会使 I/O 目标内存不再可靠" },
+      { "label": "C", "text": "因为换出会自动清空该进程的所有文件描述符" },
+      { "label": "D", "text": "因为 I/O 进程没有地址空间，所以无法交换" }
+    ],
+    "answer": "B",
+    "explanation": "如果设备或内核仍在使用用户空间缓冲区，直接换出相关页面或地址空间可能破坏 I/O 目标。常见处理是锁定相关内存或使用系统缓冲。",
+    "tags": ["memory", "swapping", "tricky"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "memory-storage-10",
+    "title": "存储器扩充的含义",
+    "question": "为什么说覆盖、交换、请求调入等技术是在逻辑上扩充内存？",
+    "options": [
+      { "label": "A", "text": "因为它们会自动增加物理内存条的容量" },
+      { "label": "B", "text": "因为它们让 CPU 不再需要访问内存" },
+      { "label": "C", "text": "因为它们通过时间复用主存和利用辅存，让程序感觉可用空间更大" },
+      { "label": "D", "text": "因为它们把所有地址都变成同一个物理地址" }
+    ],
+    "answer": "C",
+    "explanation": "这些技术并没有增加真实主存容量，而是通过把暂时不用的部分放在辅存、需要时再调入，使有限主存被复用。",
+    "tags": ["memory", "swapping", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-paging-basic-01",
+    "title": "纯分页系统",
+    "question": "关于纯分页系统（基本分页），下面哪项说法最准确？",
+    "options": [
+      { "label": "A", "text": "支持请求分页，页面可以在访问时再从外存调入" },
+      { "label": "B", "text": "作业运行前通常需要把所有页面一次装入主存页框" },
+      { "label": "C", "text": "要求一个作业的所有页面在物理内存中连续存放" },
+      { "label": "D", "text": "不会产生任何形式的碎片" }
+    ],
+    "answer": "B",
+    "explanation": "纯分页不具备请求分页和页面置换能力，作业运行前通常要把全部页面装入主存。它不要求物理连续，通常无外碎片，但页内可能有内碎片。",
+    "tags": ["memory", "paging", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-paging-basic-02",
+    "title": "页和页框",
+    "question": "在分页管理中，页和页框的关系是什么？",
+    "options": [
+      { "label": "A", "text": "页是物理内存中的块，页框是逻辑地址空间中的块" },
+      { "label": "B", "text": "页和页框大小相同，页属于逻辑地址空间，页框属于物理内存" },
+      { "label": "C", "text": "页必须连续存放，页框可以离散存放" },
+      { "label": "D", "text": "页框大小必须大于页大小，才能存放页表项" }
+    ],
+    "answer": "B",
+    "explanation": "分页把逻辑地址空间分成等长的页，把物理内存分成等长的页框。页和页框大小相同，页可以离散装入不同页框。",
+    "tags": ["memory", "paging", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-paging-basic-03",
+    "title": "分页地址结构",
+    "question": "若逻辑地址为 m 位，页大小为 2^k Byte，则逻辑地址通常如何划分？",
+    "options": [
+      { "label": "A", "text": "高 k 位为页号，低 m-k 位为页内偏移" },
+      { "label": "B", "text": "高 m-k 位为页号，低 k 位为页内偏移" },
+      { "label": "C", "text": "高 k 位为页框号，低 m-k 位为页号" },
+      { "label": "D", "text": "高 m-k 位为物理地址，低 k 位为逻辑地址" }
+    ],
+    "answer": "B",
+    "explanation": "页大小为 2^k Byte，页内偏移需要 k 位；剩余高 m-k 位用于表示页号。",
+    "tags": ["memory", "paging", "calculation"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-paging-basic-04",
+    "title": "分页地址转换",
+    "question": "分页系统中，根据逻辑地址得到物理地址的关键步骤是什么？",
+    "options": [
+      { "label": "A", "text": "用页内偏移查页表，再把页号作为物理地址低位" },
+      { "label": "B", "text": "用页号查页表得到页框号，再把页框号与原页内偏移组合" },
+      { "label": "C", "text": "直接把逻辑地址整体作为物理地址使用" },
+      { "label": "D", "text": "先执行紧凑，再按作业长度计算物理地址" }
+    ],
+    "answer": "B",
+    "explanation": "页表记录的是虚拟页到物理页框的映射。地址转换时替换页号为页框号，页内偏移保持不变。",
+    "tags": ["memory", "paging", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-paging-basic-05",
+    "title": "页面大小权衡",
+    "question": "页面大小变大时，通常会带来哪种典型影响？",
+    "options": [
+      { "label": "A", "text": "页表项数量减少，但页内浪费可能增加" },
+      { "label": "B", "text": "页表项数量增加，但内碎片一定减少为 0" },
+      { "label": "C", "text": "页内偏移位数减少，页号位数增加" },
+      { "label": "D", "text": "所有页面换入换出的单次 I/O 数据量一定减少" }
+    ],
+    "answer": "A",
+    "explanation": "页面越大，同一地址空间需要的页数越少，页表可能更小；但最后一页或未充分使用的页内空间更容易浪费。",
+    "tags": ["memory", "paging", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-paging-basic-06",
+    "title": "两级页表位数",
+    "question": "32 位逻辑地址、4 KiB 页、每个页表项 4 Byte 的两级页表中，地址字段通常如何划分？",
+    "options": [
+      { "label": "A", "text": "页目录号 10 位，页表索引 10 位，页内偏移 12 位" },
+      { "label": "B", "text": "页目录号 12 位，页表索引 10 位，页内偏移 10 位" },
+      { "label": "C", "text": "页目录号 8 位，页表索引 12 位，页内偏移 12 位" },
+      { "label": "D", "text": "页目录号 16 位，页表索引 4 位，页内偏移 12 位" }
+    ],
+    "answer": "A",
+    "explanation": "4 KiB = 2^12，所以偏移 12 位。每个页表页可放 4096/4 = 1024 = 2^10 个页表项，因此页表索引 10 位，剩余 10 位为页目录号。",
+    "tags": ["memory", "paging", "calculation", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-paging-basic-07",
+    "title": "多级页表的价值",
+    "question": "多级页表相对一级页表的主要价值是什么？",
+    "options": [
+      { "label": "A", "text": "一定减少页表占用空间的理论上限" },
+      { "label": "B", "text": "让每次内存访问都只需要访问一次内存" },
+      { "label": "C", "text": "可以只为实际用到的虚拟地址范围分配下级页表页，并减少对大块连续内存的需求" },
+      { "label": "D", "text": "让页面不再需要页框即可运行" }
+    ],
+    "answer": "C",
+    "explanation": "多级页表把页表本身分页，未使用的地址范围无需分配下级页表页；它还避免单个巨大页表必须连续存放。但层级增加会增加查表次数，理论上限也不一定更小。",
+    "tags": ["memory", "paging", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-paging-basic-08",
+    "title": "TLB 有效访问时间",
+    "question": "假设查找 TLB 时间为 t，访问内存时间为 T，TLB 命中率为 α；忽略缺页和多级页表，未命中时需要访问一次页表和一次目标数据。有效访问时间是哪一项？",
+    "options": [
+      { "label": "A", "text": "α(t+T) + (1-α)(t+2T)" },
+      { "label": "B", "text": "α(T) + (1-α)(t+T)" },
+      { "label": "C", "text": "α(t+2T) + (1-α)(t+T)" },
+      { "label": "D", "text": "t + αT" }
+    ],
+    "answer": "A",
+    "explanation": "命中时查 TLB 后访问目标数据，时间为 t+T；未命中时查 TLB、查页表、访问目标数据，时间为 t+2T。",
+    "tags": ["memory", "tlb", "calculation"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-paging-basic-09",
+    "title": "TLB miss 与缺页",
+    "question": "关于 TLB miss 和缺页，下列说法正确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "TLB miss 一定表示对应页面不在物理内存中" },
+      { "label": "B", "text": "TLB miss 只表示快表中没有该映射，页表项仍可能有效" },
+      { "label": "C", "text": "只要页表项有效，就一定不会发生 TLB miss" },
+      { "label": "D", "text": "缺页只需要重新查 TLB，不需要操作系统参与" }
+    ],
+    "answer": "B",
+    "explanation": "TLB 是页表映射的缓存。TLB miss 可能只需要查页表并回填 TLB；只有页表项无效或页面不在内存等情况才涉及缺页处理。",
+    "tags": ["memory", "tlb", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-paging-basic-10",
+    "title": "反置页表",
+    "question": "反置页表相对普通页表的核心区别是什么？",
+    "options": [
+      { "label": "A", "text": "普通页表按物理页框排列，反置页表按虚拟页号排列" },
+      { "label": "B", "text": "反置页表按物理页框排列，表项记录该页框对应的进程和虚拟页信息" },
+      { "label": "C", "text": "反置页表不需要保存任何进程信息" },
+      { "label": "D", "text": "反置页表会让每个进程拥有一张与虚拟地址空间等大的页表" }
+    ],
+    "answer": "B",
+    "explanation": "普通页表通常以虚拟页号为索引；反置页表以物理页框为中心，表项说明该页框当前映射到哪个进程的哪个虚拟页，因此表规模主要与物理内存页框数相关。",
+    "tags": ["memory", "paging", "inverted-page-table"],
+    "difficulty": "medium"
   }
 ]

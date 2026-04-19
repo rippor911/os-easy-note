@@ -157,6 +157,74 @@ function mermaidFencePlugin(md: any) {
   }
 }
 
+function adjacentStrongPlugin(md: any) {
+  md.core.ruler.after('inline', 'adjacent_strong', (state: any) => {
+    const splitStrongText = (token: any) => {
+      const text = token.content
+      if (!text.includes('**')) return [token]
+
+      const Token = token.constructor
+      const tokens = []
+      const strongRE = /\*\*(?=\S)(.+?\S)\*\*/g
+      const cjkRE = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
+      let lastIndex = 0
+      let match: RegExpExecArray | null
+
+      while ((match = strongRE.exec(text)) !== null) {
+        const beforeChar = match.index > 0 ? text[match.index - 1] : ''
+        const afterChar = strongRE.lastIndex < text.length ? text[strongRE.lastIndex] : ''
+        if (!cjkRE.test(`${beforeChar}${match[1]}${afterChar}`)) continue
+
+        if (match.index > lastIndex) {
+          const before = new Token('text', '', 0)
+          before.content = text.slice(lastIndex, match.index)
+          tokens.push(before)
+        }
+
+        const open = new Token('strong_open', 'strong', 1)
+        open.markup = '**'
+        tokens.push(open)
+
+        const content = new Token('text', '', 0)
+        content.content = match[1]
+        tokens.push(content)
+
+        const close = new Token('strong_close', 'strong', -1)
+        close.markup = '**'
+        tokens.push(close)
+
+        lastIndex = strongRE.lastIndex
+      }
+
+      if (lastIndex === 0) return [token]
+
+      if (lastIndex < text.length) {
+        const after = new Token('text', '', 0)
+        after.content = text.slice(lastIndex)
+        tokens.push(after)
+      }
+
+      return tokens
+    }
+
+    const walk = (tokens: any[]) => {
+      for (let index = 0; index < tokens.length; index += 1) {
+        const token = tokens[index]
+        if (token.children) walk(token.children)
+        if (token.type !== 'text') continue
+
+        const replacement = splitStrongText(token)
+        if (replacement.length === 1 && replacement[0] === token) continue
+
+        tokens.splice(index, 1, ...replacement)
+        index += replacement.length - 1
+      }
+    }
+
+    walk(state.tokens)
+  })
+}
+
 export default defineConfig({
   title: 'OS Notes Web',
   description: '面向复习、刷题与知识体系整理的操作系统学习笔记站点',
@@ -175,6 +243,7 @@ export default defineConfig({
     },
     config(md) {
       mermaidFencePlugin(md)
+      adjacentStrongPlugin(md)
     }
   },
   vite: {

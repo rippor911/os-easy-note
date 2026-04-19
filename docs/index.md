@@ -15,6 +15,6 @@ This is the home page for the operating-system notes site.
 - [Tags](./tags.md)
 - [Progress](./progress.md)
 
-## Notes
+## Join us
 
-Maintainer-only documents are kept outside `docs/`, so they are not published as visitor pages.
+If you find any mistakes or have anything to add, please open an issue or sign up as a contributor at the [GitHub repository](https://github.com/rippor911/os-easy-note)
