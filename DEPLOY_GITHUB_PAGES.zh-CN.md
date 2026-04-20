@@ -47,7 +47,7 @@ VITEPRESS_BASE: /${{ github.event.repository.name }}/
 
 ## 二、启用 GitHub Pages
 
-第一次部署前，在 GitHub 仓库页面操作：
+第一次部署前，可以在 GitHub 仓库页面手动开启 Pages：
 
 1. 打开仓库 `rippor911/os-easy-note`。
 2. 进入 `Settings`。
@@ -57,6 +57,14 @@ VITEPRESS_BASE: /${{ github.event.repository.name }}/
 5. 保存。
 
 之后每次 push 到 `main`，GitHub Actions 会自动部署。
+
+当前 workflow 也给 `actions/configure-pages` 设置了：
+
+```yaml
+enablement: true
+```
+
+如果仓库权限允许，它会在第一次运行时自动启用 GitHub Pages。若 Actions 仍提示 `Get Pages site failed`，就按上面的步骤手动把 Source 改成 `GitHub Actions`，再重新运行 workflow。
 
 ## 三、推送触发部署
 
