@@ -34,10 +34,13 @@
 ```json
 {
   "scripts": {
-    "build": "vitepress build"
+    "prebuild": "node scripts/clean-dist.mjs",
+    "build": "vitepress build --mpa"
   }
 }
 ```
+
+这里使用 `--mpa` 是为了生成更直接的静态 HTML 站点，并绕开当前 SPA bundle 在部分 Node/Windows 环境下静默失败的问题。`prebuild` 会先清理旧的 `dist/`，避免已经删除或改名的页面残留在部署产物中。
 
 不要在 VitePress v1 的脚本里写 `--config .vitepress/config.clean.ts`。VitePress 会加载 `.vitepress/config.ts`，本项目已经让它转发到 `config.clean.ts`。
 
@@ -114,6 +117,13 @@ npm run typecheck
 - `package.json` 是否包含 `"engines": { "node": "22.x" }`。
 - `.nvmrc` 是否为 `22`。
 - Vercel Project Settings 里的 Node.js Version 是否选择了 `22.x`。
+
+如果本地还没切到 Node 22，可以临时验证：
+
+```bash
+npm exec --package=node@22 -- npm run build
+npm exec --package=node@22 -- npm run preview
+```
 
 如果是 Markdown 链接问题，运行：
 

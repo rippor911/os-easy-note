@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "prebuild": "node scripts/clean-dist.mjs",
+    "build": "vitepress build --mpa",
     "preview": "vitepress preview",
     "typecheck": "vue-tsc --noEmit",
     "check:docs": "node scripts/check-docs.mjs",
