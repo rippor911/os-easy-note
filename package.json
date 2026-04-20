@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vitepress dev",
     "prebuild": "node scripts/clean-dist.mjs",
-    "build": "vitepress build --mpa",
+    "build": "vitepress build",
     "preview": "vitepress preview",
     "typecheck": "vue-tsc --noEmit",
     "check:docs": "node scripts/check-docs.mjs",
