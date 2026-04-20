@@ -7,9 +7,9 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "vitepress dev --config .vitepress/config.clean.ts",
-    "build": "vitepress build --config .vitepress/config.clean.ts",
-    "preview": "vitepress preview --config .vitepress/config.clean.ts",
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
     "typecheck": "vue-tsc --noEmit",
     "check:docs": "node scripts/check-docs.mjs",
     "new:note": "node scripts/new-note.mjs"

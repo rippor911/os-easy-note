@@ -2,6 +2,8 @@
 
 这份说明适用于当前项目：VitePress 静态站点，构建输出目录为 `dist/`。
 
+> 注意：当前项目在 `.vitepress/config.clean.ts` 中设置了 `outDir: 'dist'`，并由 `.vitepress/config.ts` 转发加载。因此 Vercel 的 Output Directory 应填写 `dist`，不是 VitePress 默认文档里常见的 `.vitepress/dist`。
+
 ## 一、项目内已经配置好的内容
 
 项目根目录已经包含 `vercel.json`：
@@ -15,7 +17,7 @@
 }
 ```
 
-`package.json` 中也固定了 Node 版本：
+`package.json` 和 `.nvmrc` 中也固定了 Node 版本：
 
 ```json
 {
@@ -26,6 +28,18 @@
 ```
 
 这样做是为了避免 Vercel 默认 Node 24.x 或本地 Node 24.x 与当前 VitePress/Vite 组合在 Windows 构建时出现原生崩溃。
+
+`package.json` 的构建脚本是：
+
+```json
+{
+  "scripts": {
+    "build": "vitepress build"
+  }
+}
+```
+
+不要在 VitePress v1 的脚本里写 `--config .vitepress/config.clean.ts`。VitePress 会加载 `.vitepress/config.ts`，本项目已经让它转发到 `config.clean.ts`。
 
 ## 二、推荐部署方式：GitHub + Vercel
 
@@ -98,6 +112,7 @@ npm run typecheck
 如果 Vercel 日志里显示 Node 版本是 24.x，请检查：
 
 - `package.json` 是否包含 `"engines": { "node": "22.x" }`。
+- `.nvmrc` 是否为 `22`。
 - Vercel Project Settings 里的 Node.js Version 是否选择了 `22.x`。
 
 如果是 Markdown 链接问题，运行：
@@ -107,3 +122,19 @@ npm run check:docs
 ```
 
 根据提示修复缺失文件或空白页面。
+
+## 六、如果 Vercel 显示 Ready 但外部打不开
+
+这通常不是浏览器问题，而是 Vercel 项目配置或输出产物有问题。按下面顺序检查：
+
+1. Project Settings → Build & Output Settings：
+   - Framework Preset：`Other` 或 VitePress 自动识别均可
+   - Root Directory：项目根目录
+   - Install Command：`npm ci`
+   - Build Command：`npm run build`
+   - Output Directory：`dist`
+2. Deployments → 当前部署 → Build Logs：
+   - 确认 Node.js 版本是 `22.x`
+   - 确认没有 `No Output Directory found`
+   - 确认构建产物里有 `dist/index.html`
+3. 如果后台配置看起来正常但域名仍异常，建议新建一个 Vercel Project 重新导入同一个 GitHub 仓库，避免旧项目配置残留。
