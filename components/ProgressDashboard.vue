@@ -127,7 +127,7 @@ onMounted(refresh)
 
     <section class="progress__panel">
       <h2>错题记录</h2>
-      <p v-if="!wrongQuestions.length">暂无错题。答错单选题或填空题后会出现在这里。</p>
+      <p v-if="!wrongQuestions.length">暂无错题。答错客观题，或把主观题自主判为错误后，会出现在这里。</p>
       <article v-for="question in wrongQuestions" :key="question.id" class="progress__wrong">
         <strong>{{ question.title }}</strong>
         <span>你的答案：{{ question.selected }}；标准答案：{{ question.answer }}</span>

@@ -8,6 +8,7 @@ const orderConfigFile = path.join(root, 'content-order.json')
 const warnings = []
 const errors = []
 const sectionIndexNames = new Set(['index.md', 'main.md', 'README.md'])
+const ignoredSectionDirs = new Set(['public'])
 
 function toPosix(value) {
   return value.replace(/\\/g, '/')
@@ -64,6 +65,7 @@ function validateSectionIndexes() {
   const entries = fs.readdirSync(docsDir, { withFileTypes: true })
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
+    if (ignoredSectionDirs.has(entry.name)) continue
     const sectionDir = path.join(docsDir, entry.name)
     const hasIndex = fs
       .readdirSync(sectionDir, { withFileTypes: true })

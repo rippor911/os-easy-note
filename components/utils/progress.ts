@@ -7,7 +7,7 @@ export interface ReadPageRecord {
 
 export interface QuestionRecord {
   id: string
-  type: 'single' | 'blank'
+  type: 'single' | 'blank' | 'true-false' | 'subjective'
   collection: string
   title: string
   selected: string

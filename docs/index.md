@@ -51,17 +51,10 @@ review: 2026-04-26
   </a>
 </div>
 
-## 推荐路径
-
-<ol class="os-path">
-  <li><a href="./OS%20Boot/main">先看 OS Boot</a><span>理解系统如何开始运行。</span></li>
-  <li><a href="./%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/main">再学内存管理</a><span>掌握地址转换、页表和缺页处理。</span></li>
-  <li><a href="./%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/main">最后进入并发主题</a><span>把进程、线程、同步与互斥连起来。</span></li>
-</ol>
-
 ## 辅助入口
 
 - [知识地图](./knowledge-map.md)：从整体结构定位概念关系。
+- [期中考试真题](./exams.md)：打开或下载已收录的期中试题 PDF。
 - [标签索引](./tags.md)：按主题标签查找页面。
 - [学习进度](./progress.md)：查看本地阅读、做题和错题记录。
 - [GitHub repository](https://github.com/rippor911/os-easy-note)：反馈错误或补充内容。
