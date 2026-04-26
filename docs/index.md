@@ -8,11 +8,14 @@ review: 2026-04-26
 # OS Notes Web
 
 <div class="os-home-hero">
-  <p class="os-home-hero__eyebrow">Operating Systems Study Notes</p>
-  <p class="os-home-hero__lead">面向复习、实验和概念辨析的操作系统学习笔记。内容以 Markdown 为主线，配合题目、知识地图和本地学习进度，帮助你把零散概念串成可复盘的结构。</p>
-  <div class="os-home-hero__actions">
-    <a class="os-button" href="./knowledge-map">知识结构</a>
-    <a class="os-button os-button--secondary" href="./progress">学习进度</a>
+  <img class="os-home-hero__logo" src="/logo-round.png" alt="OS Notes Web logo">
+  <div>
+    <p class="os-home-hero__eyebrow">Operating Systems Study Notes</p>
+    <p class="os-home-hero__lead">面向复习、实验和概念辨析的操作系统学习笔记。内容以 Markdown 为主线，配合题目、知识地图和本地学习进度，帮助你把零散概念串成可复盘的结构。</p>
+    <div class="os-home-hero__actions">
+      <a class="os-button" href="./knowledge-map">知识结构</a>
+      <a class="os-button os-button--secondary" href="./progress">学习进度</a>
+    </div>
   </div>
 </div>
 

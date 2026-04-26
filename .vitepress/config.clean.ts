@@ -251,6 +251,10 @@ function adjacentStrongPlugin(md: any) {
 export default defineConfig({
   title: 'OS Notes Web',
   description: 'Operating system notes for study and review.',
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/logo-round.png' }],
+    ['link', { rel: 'apple-touch-icon', href: '/logo-round.png' }]
+  ],
   srcDir: 'docs',
   outDir: 'dist',
   base: process.env.VITEPRESS_BASE || '/',
@@ -278,7 +282,7 @@ export default defineConfig({
     }
   },
   themeConfig: {
-    logo: '/logo.svg',
+    logo: '/logo-round.png',
     nav: [
       { text: '\u9996\u9875', link: '/' },
       { text: '\u77e5\u8bc6\u7ed3\u6784', link: '/knowledge-map' },

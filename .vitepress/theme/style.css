@@ -121,6 +121,26 @@
   box-shadow: var(--os-shadow-soft);
 }
 
+.os-home-hero {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.os-home-hero__logo {
+  width: 104px;
+  height: 104px;
+  border: 0 !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+.VPNavBarTitle .logo {
+  border-radius: 50%;
+}
+
 .os-home-hero__eyebrow,
 .os-chapter-hero__eyebrow,
 .os-card__meta {
@@ -320,6 +340,16 @@
   .os-chapter-hero,
   .os-note-band {
     padding: 18px;
+  }
+
+  .os-home-hero {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .os-home-hero__logo {
+    width: 72px;
+    height: 72px;
   }
 
   .os-stat-grid {
