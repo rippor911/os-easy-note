@@ -9,6 +9,11 @@ const orderConfigFile = path.join(projectRoot, 'content-order.json')
 const ignoredFiles = new Set(['_template.md'])
 const sectionIndexNames = ['index.md', 'main.md', 'README.md']
 const enableSearch = process.env.VP_DISABLE_SEARCH !== '1'
+const siteBase = process.env.VITEPRESS_BASE || '/'
+const assetWithBase = (assetPath: string) => {
+  const base = siteBase.endsWith('/') ? siteBase : `${siteBase}/`
+  return `${base}${assetPath.replace(/^\//, '')}`
+}
 
 interface SidebarOrderConfig {
   top?: string[]
@@ -252,12 +257,12 @@ export default defineConfig({
   title: 'OS Notes Web',
   description: 'Operating system notes for study and review.',
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/logo-round.png' }],
-    ['link', { rel: 'apple-touch-icon', href: '/logo-round.png' }]
+    ['link', { rel: 'icon', type: 'image/png', href: assetWithBase('/logo-round.png') }],
+    ['link', { rel: 'apple-touch-icon', href: assetWithBase('/logo-round.png') }]
   ],
   srcDir: 'docs',
   outDir: 'dist',
-  base: process.env.VITEPRESS_BASE || '/',
+  base: siteBase,
   cleanUrls: false,
   appearance: true,
   lastUpdated: true,

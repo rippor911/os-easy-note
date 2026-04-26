@@ -5,10 +5,14 @@ difficulty: overview
 review: 2026-04-26
 ---
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # OS Notes Web
 
 <div class="os-home-hero">
-  <img class="os-home-hero__logo" src="/logo-round.png" alt="OS Notes Web logo">
+  <img class="os-home-hero__logo" :src="withBase('/logo-round.png')" alt="OS Notes Web logo">
   <div>
     <p class="os-home-hero__eyebrow">Operating Systems Study Notes</p>
     <p class="os-home-hero__lead">面向复习、实验和概念辨析的操作系统学习笔记。内容以 Markdown 为主线，配合题目、知识地图和本地学习进度，帮助你把零散概念串成可复盘的结构。</p>
