@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { data as pages, type NotePage } from '../.vitepress/theme/data/pages.data'
 
 const selectedTag = ref('')
+const query = ref('')
 
 const taggedPages = computed(() => pages.filter((page: NotePage) => page.tags.length))
 
@@ -13,8 +14,12 @@ const allTags = computed(() => {
 })
 
 const filteredPages = computed(() => {
-  if (!selectedTag.value) return taggedPages.value
-  return taggedPages.value.filter((page) => page.tags.includes(selectedTag.value))
+  return taggedPages.value.filter((page) => {
+    const matchesTag = !selectedTag.value || page.tags.includes(selectedTag.value)
+    const keyword = query.value.trim().toLowerCase()
+    const matchesQuery = !keyword || page.title.toLowerCase().includes(keyword)
+    return matchesTag && matchesQuery
+  })
 })
 
 onMounted(() => {
@@ -25,6 +30,11 @@ onMounted(() => {
 
 <template>
   <section class="tag-filter">
+    <label class="tag-filter__search">
+      <span>搜索页面</span>
+      <input v-model="query" type="search" placeholder="输入标题关键词">
+    </label>
+
     <div class="tag-filter__toolbar">
       <button
         class="tag-filter__tag"
@@ -62,6 +72,24 @@ onMounted(() => {
 <style scoped>
 .tag-filter {
   margin: 24px 0;
+}
+
+.tag-filter__search {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.tag-filter__search input {
+  width: 100%;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--os-radius);
+  padding: 10px 12px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
 }
 
 .tag-filter__toolbar {
@@ -102,11 +130,12 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--os-radius);
   padding: 14px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   text-decoration: none;
+  box-shadow: var(--os-shadow-soft);
 }
 
 .tag-filter__item:hover {

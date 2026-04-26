@@ -66,7 +66,7 @@ const rightItems = computed(() => toItems(props.right))
 
 .compare__side {
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--os-radius);
   padding: 14px;
   background: var(--vp-c-bg-soft);
 }

@@ -126,17 +126,17 @@ function check() {
   gap: 8px 12px;
   align-items: center;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: var(--os-radius);
   padding: 10px 12px;
   background: var(--vp-c-bg-soft);
 }
 
 .multi-fill__item.is-correct {
-  border-color: #1f9d55;
+  border-color: var(--os-c-green);
 }
 
 .multi-fill__item.is-wrong {
-  border-color: #d64545;
+  border-color: var(--os-c-red);
 }
 
 .multi-fill__label {
@@ -147,7 +147,7 @@ function check() {
 .multi-fill__input {
   min-width: 0;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: var(--os-radius);
   padding: 9px 11px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
@@ -161,14 +161,14 @@ function check() {
 }
 
 .multi-fill__answer {
-  color: #d64545;
+  color: var(--os-c-red);
   font-weight: 700;
 }
 
 .multi-fill__button {
   margin-top: 14px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--os-radius);
   padding: 10px 16px;
   background: var(--vp-c-brand-1);
   color: white;
@@ -183,15 +183,15 @@ function check() {
 
 .multi-fill__result {
   margin-top: 12px;
-  border-left: 4px solid #d64545;
-  border-radius: 8px;
+  border-left: 4px solid var(--os-c-red);
+  border-radius: var(--os-radius);
   padding: 10px 12px;
-  background: color-mix(in srgb, #d64545 9%, transparent);
+  background: color-mix(in srgb, var(--os-c-red) 9%, transparent);
 }
 
 .multi-fill__result.is-correct {
-  border-left-color: #1f9d55;
-  background: color-mix(in srgb, #1f9d55 9%, transparent);
+  border-left-color: var(--os-c-green);
+  background: color-mix(in srgb, var(--os-c-green) 9%, transparent);
 }
 
 .multi-fill__result p {

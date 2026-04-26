@@ -30,9 +30,10 @@ const open = ref(false)
 .reveal {
   margin: 18px 0;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 14px;
+  border-radius: var(--os-radius);
   overflow: hidden;
   background: var(--vp-c-bg);
+  box-shadow: var(--os-shadow-soft);
 }
 
 .reveal__button {

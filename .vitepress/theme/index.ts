@@ -6,6 +6,7 @@ import Mermaid from '../../components/Mermaid.vue'
 import MultiFillBlank from '../../components/MultiFillBlank.vue'
 import ProgressDashboard from '../../components/ProgressDashboard.vue'
 import Quiz from '../../components/Quiz.vue'
+import QuizSet from '../../components/QuizSet.vue'
 import Reveal from '../../components/Reveal.vue'
 import TagFilter from '../../components/TagFilter.vue'
 import Layout from './Layout.vue'
@@ -16,6 +17,7 @@ export default {
   Layout,
   enhanceApp({ app }) {
     app.component('Quiz', Quiz)
+    app.component('QuizSet', QuizSet)
     app.component('FillBlank', FillBlank)
     app.component('MultiFillBlank', MultiFillBlank)
     app.component('Reveal', Reveal)

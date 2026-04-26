@@ -85,7 +85,7 @@ function check() {
   flex: 1;
   min-width: 0;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: var(--os-radius);
   padding: 10px 12px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
@@ -93,7 +93,7 @@ function check() {
 
 .fill__button {
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--os-radius);
   padding: 10px 14px;
   background: var(--vp-c-brand-1);
   color: white;
@@ -103,15 +103,15 @@ function check() {
 
 .fill__result {
   margin-top: 12px;
-  border-left: 4px solid #d64545;
-  border-radius: 10px;
+  border-left: 4px solid var(--os-c-red);
+  border-radius: var(--os-radius);
   padding: 10px 12px;
-  background: color-mix(in srgb, #d64545 9%, transparent);
+  background: color-mix(in srgb, var(--os-c-red) 9%, transparent);
 }
 
 .fill__result.is-correct {
-  border-left-color: #1f9d55;
-  background: color-mix(in srgb, #1f9d55 9%, transparent);
+  border-left-color: var(--os-c-green);
+  background: color-mix(in srgb, var(--os-c-green) 9%, transparent);
 }
 
 .fill__result p {

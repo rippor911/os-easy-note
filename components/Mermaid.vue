@@ -66,9 +66,10 @@ watch(() => props.code, () => {
   margin: 24px 0;
   overflow-x: auto;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 14px;
+  border-radius: var(--os-radius);
   padding: 18px;
   background: var(--vp-c-bg);
+  box-shadow: var(--os-shadow-soft);
 }
 
 .mermaid-block__canvas {

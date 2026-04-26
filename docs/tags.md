@@ -1,10 +1,10 @@
 ---
-title: Tags
+title: 标签索引
 tags: [index]
 difficulty: index
-review: 2026-04-16
+review: 2026-04-26
 ---
 
-# Tags
+# 标签索引
 
 <TagFilter />

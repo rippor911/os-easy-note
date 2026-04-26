@@ -3,24 +3,32 @@ title: 进程与线程
 tags: [process, concurrency]
 ---
 
-# Process and Threads
+# 进程与线程
 
-## Pages
+<div class="os-chapter-hero os-chapter-hero--process">
+  <p class="os-chapter-hero__eyebrow">Concurrency Control</p>
+  <p>这一章关注操作系统如何组织并发执行：进程负责资源与调度边界，线程提高执行粒度，同步互斥保证共享资源访问可控。</p>
+</div>
 
-- [Process State and Control](./4_1%20进程状态与控制.md)
-- [Threads](./4_2%20线程.md)
-- [Synchronization and Mutual Exclusion](./4_3%20同步与互斥.md)
+## 学习顺序
 
-## 
+<ol class="os-path">
+  <li><a href="./4_1%20%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81%E4%B8%8E%E6%8E%A7%E5%88%B6">进程状态与控制</a><span>先掌握进程、PCB、状态转换和原语。</span></li>
+  <li><a href="./4_2%20%E7%BA%BF%E7%A8%8B">线程</a><span>理解用户级线程、内核级线程和混合实现的差异。</span></li>
+  <li><a href="./4_3%20%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5">同步与互斥</a><span>把临界区、信号量、管程和经典同步问题串起来。</span></li>
+</ol>
 
-> [!note]
->
-> + **并发（Concurrent）：**任意时刻，活动 $a_1$ 和 $a_2$ 都在各自起点和终点之间的某处（即都没有结束），则称 $a_1$ 和 $a_2$ 并发执行 
-> + **并行（Parallel）：**活动 $a_1$ 和 $a_2$ 在不同的处理器上执行（并行 $\subset$ 并发） 
-> + **进程（Process）：**一个程序在一个数据集合上运行的过程，是系统进行资源分配和调度的一个独立单位
-> + **原语（Primitive）：**由若干条指令所组成的指令序列，来实现某个特定的操作功能（连续不可分割的，OS核心，必须内核态执行，常驻内存）
-> + **线程（Thread）：**现代操作系统将进程进一步划分为资源拥有者和可执行单元，线程就是可执行单元（任务层并发），共享资源
-> + **临界资源（Critical Resource）：**一次仅允许一个进程（或线程）使用的共享资源，如打印机、共享变量、缓冲区等
-> + **临界区（Critical Section）：**进程（或线程）中访问临界资源的那段代码区域
-> + **互斥（Mutual Exclusion）：**多个进程（或线程）因竞争临界资源而产生的**间接制约关系**，要求同一时刻只允许一个进程（或线程）进入临界区访问该资源。
-> + **同步（Synchronization）：**多个并发执行的进程（或线程）之间，为协调执行次序、共享资源使用次序或配合完成某任务，而建立的**直接制约关系**，使其按一定规则推进。
+## 关键概念
+
+<div class="os-card-grid os-card-grid--compact">
+  <article class="os-card">
+    <span class="os-card__meta">调度单位</span>
+    <strong>进程与线程</strong>
+    <p>进程更偏资源拥有者，线程更偏执行单元；很多题目会围绕共享资源和切换开销设陷阱。</p>
+  </article>
+  <article class="os-card">
+    <span class="os-card__meta">约束关系</span>
+    <strong>同步与互斥</strong>
+    <p>互斥处理竞争同一资源，同步处理执行先后依赖；二者都服务于并发程序的正确性。</p>
+  </article>
+</div>

@@ -174,7 +174,7 @@ watch(() => [props.collection, props.questionId], () => {
   align-items: center;
   width: 100%;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--os-radius);
   padding: 12px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
@@ -198,20 +198,20 @@ watch(() => [props.collection, props.questionId], () => {
 }
 
 .quiz__option.is-correct {
-  border-color: #1f9d55;
-  background: color-mix(in srgb, #1f9d55 10%, transparent);
+  border-color: var(--os-c-green);
+  background: color-mix(in srgb, var(--os-c-green) 10%, transparent);
 }
 
 .quiz__option.is-wrong {
-  border-color: #d64545;
-  background: color-mix(in srgb, #d64545 10%, transparent);
+  border-color: var(--os-c-red);
+  background: color-mix(in srgb, var(--os-c-red) 10%, transparent);
 }
 
 .quiz__submit,
 .quiz__next {
   margin-top: 16px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--os-radius);
   padding: 9px 14px;
   font-weight: 700;
   cursor: pointer;
@@ -235,15 +235,15 @@ watch(() => [props.collection, props.questionId], () => {
 
 .quiz__result {
   margin-top: 16px;
-  border-left: 4px solid #d64545;
-  border-radius: 10px;
+  border-left: 4px solid var(--os-c-red);
+  border-radius: var(--os-radius);
   padding: 12px 14px;
-  background: color-mix(in srgb, #d64545 9%, transparent);
+  background: color-mix(in srgb, var(--os-c-red) 9%, transparent);
 }
 
 .quiz__result.is-correct {
-  border-left-color: #1f9d55;
-  background: color-mix(in srgb, #1f9d55 9%, transparent);
+  border-left-color: var(--os-c-green);
+  background: color-mix(in srgb, var(--os-c-green) 9%, transparent);
 }
 
 .quiz__result p {
