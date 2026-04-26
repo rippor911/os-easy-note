@@ -388,5 +388,185 @@
     "explanation": "普通页表通常以虚拟页号为索引；反置页表以物理页框为中心，表项说明该页框当前映射到哪个进程的哪个虚拟页，因此表规模主要与物理内存页框数相关。",
     "tags": ["memory", "paging", "inverted-page-table"],
     "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-01",
+    "title": "局部性与按需调页",
+    "question": "虚拟内存能够在只装入部分页面的情况下仍让程序有效运行，最主要依赖于哪组性质？",
+    "options": [
+      { "label": "A", "text": "时间局部性和空间局部性" },
+      { "label": "B", "text": "并发性和异步性" },
+      { "label": "C", "text": "可重入性和共享性" },
+      { "label": "D", "text": "静态链接和动态链接" }
+    ],
+    "answer": "A",
+    "explanation": "局部性原理说明程序在一段时间内往往反复访问刚用过的指令和数据，也倾向访问其附近内容，因此系统通常只需把当前活跃的那部分页面调入主存。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-virtual-02",
+    "title": "虚拟内存提供的抽象",
+    "question": "关于虚拟内存为进程提供的地址空间，下列哪项描述最准确？",
+    "options": [
+      { "label": "A", "text": "为所有进程提供同一份共享且连续的物理地址空间" },
+      { "label": "B", "text": "为每个进程提供大的、一致的、连续可用且私有的地址空间" },
+      { "label": "C", "text": "只负责扩大可见容量，不负责隔离和保护" },
+      { "label": "D", "text": "让应用程序直接决定页面换入换出的时机" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟内存的核心价值不只是“看起来更大”，还包括给每个进程提供一致的地址空间抽象，并通过地址映射和保护机制实现隔离。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-virtual-03",
+    "title": "主存与磁盘的缓存关系",
+    "question": "从分层存储角度看，虚拟内存更贴近下面哪种理解？",
+    "options": [
+      { "label": "A", "text": "磁盘是主存的高速缓存" },
+      { "label": "B", "text": "主存是磁盘的高速缓存" },
+      { "label": "C", "text": "页表是磁盘的高速缓存" },
+      { "label": "D", "text": "寄存器是磁盘的高速缓存" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟内存利用分层存储思想，把当前活跃的数据页放在速度更快但容量更小的主存中，因此可以把主存看作磁盘上后备存储的高速缓存。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-virtual-04",
+    "title": "虚拟存储的多次性",
+    "question": "虚拟存储技术中“多次性”的含义是什么？",
+    "options": [
+      { "label": "A", "text": "作业必须一次性全部装入主存后才能运行" },
+      { "label": "B", "text": "一个作业可以被分成多次调入主存运行" },
+      { "label": "C", "text": "每个页面必须同时被多个进程共享" },
+      { "label": "D", "text": "每次调页都必须把相邻多个页面一起调入" }
+    ],
+    "answer": "B",
+    "explanation": "“多次性”强调作业不必一次性全部装入主存，而是允许在运行过程中分批调入所需部分，这是虚拟存储区别于早期一次性装入方式的重要特征。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-05",
+    "title": "虚拟内存与 Cache 的侧重点",
+    "question": "关于 cache-主存机制和虚拟内存机制，下列说法正确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "两者未命中后都只需要硬件处理，不需要操作系统参与" },
+      { "label": "B", "text": "cache 更侧重缓解 CPU 与主存速度差异，虚拟内存更侧重容量扩充、保护和管理" },
+      { "label": "C", "text": "虚拟内存未命中一定比 cache miss 更快，因为有磁盘后备" },
+      { "label": "D", "text": "两者对程序来说完全等价，只是叫法不同" }
+    ],
+    "answer": "B",
+    "explanation": "cache 的主要目标是缩小 CPU 与主存的速度差；虚拟内存则主要解决容量扩充、地址空间管理和保护问题。发生缺页时通常还需要 OS 介入，代价远大于普通 cache miss。",
+    "tags": ["memory", "virtual-memory", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-06",
+    "title": "更新问题的含义",
+    "question": "虚拟内存需要解决的“更新问题”主要关注什么？",
+    "options": [
+      { "label": "A", "text": "如何保证主存和辅存中页面内容的一致性" },
+      { "label": "B", "text": "如何让所有页面永久驻留在主存中" },
+      { "label": "C", "text": "如何决定页内偏移占多少位" },
+      { "label": "D", "text": "如何让不同进程共用同一张页表" }
+    ],
+    "answer": "A",
+    "explanation": "页面在主存和辅存之间换入换出时，系统必须考虑脏页写回、页表状态更新等问题，本质上是在维护不同层级存储之间的数据一致性。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-07",
+    "title": "虚拟内存的基本流程",
+    "question": "从高层次流程看，程序访问某页而该页当前不在内存时，下面哪一项最符合虚拟内存的工作过程？",
+    "options": [
+      { "label": "A", "text": "直接终止进程，然后重新编译程序" },
+      { "label": "B", "text": "发生缺页，操作系统按策略调入所需页，必要时置换旧页，然后继续执行" },
+      { "label": "C", "text": "先把整个进程全部换入，再重新建立所有逻辑地址" },
+      { "label": "D", "text": "先扩大物理内存容量，再重新访问该页" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟内存的基本思路是访问时检查所需页是否在主存中；若不在，则触发缺页并由 OS 调页，必要时进行页面置换，随后恢复并继续执行原来的访问。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-virtual-08",
+    "title": "虚拟存储的离散性",
+    "question": "虚拟存储技术的“离散性”主要指什么？",
+    "options": [
+      { "label": "A", "text": "作业必须占用一整块连续物理内存" },
+      { "label": "B", "text": "作业的各个部分可以离散地放在不同物理块中，并通过地址映射组织起来" },
+      { "label": "C", "text": "所有页面必须按访问顺序连续写入磁盘" },
+      { "label": "D", "text": "CPU 每次只能访问一个固定的物理地址" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟存储建立在离散分配基础上，程序的不同页面或段可以不连续地放入主存，再由页表或段表等机制完成逻辑地址到物理地址的映射。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "memory-virtual-09",
+    "title": "虚拟内存容量限制",
+    "question": "关于虚拟内存最大容量，下列说法最准确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "只由物理内存容量决定" },
+      { "label": "B", "text": "只由当前空闲页框数量决定" },
+      { "label": "C", "text": "受计算机地址结构和可用外存等因素限制，并不等于无限大" },
+      { "label": "D", "text": "一定等于 CPU cache 容量" }
+    ],
+    "answer": "C",
+    "explanation": "虚拟内存让程序看到的地址空间可以大于物理内存，但它仍受地址位数、页表结构、后备存储等条件限制，不能理解为无限容量。",
+    "tags": ["memory", "virtual-memory", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-10",
+    "title": "覆盖、交换与虚拟内存",
+    "question": "虚拟内存相对覆盖技术的一个重要改进是什么？",
+    "options": [
+      { "label": "A", "text": "要求程序员手工划分覆盖段，并显式安排调入顺序" },
+      { "label": "B", "text": "由操作系统和硬件协作完成按需调入，不要求程序员手工管理覆盖关系" },
+      { "label": "C", "text": "完全取消辅存，只依赖寄存器保存程序" },
+      { "label": "D", "text": "只能一次性把整个程序装入主存后运行" }
+    ],
+    "answer": "B",
+    "explanation": "覆盖技术通常需要程序员理解程序结构并安排不同时驻留的代码段；虚拟内存借鉴“用时调入”的思想，但调页、保护和映射主要由 OS 与硬件完成。",
+    "tags": ["memory", "virtual-memory", "overlay", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-11",
+    "title": "虚拟内存的代价",
+    "question": "下面哪项最能体现虚拟内存机制的主要代价？",
+    "options": [
+      { "label": "A", "text": "每次命中 CPU cache 都必须访问磁盘" },
+      { "label": "B", "text": "地址转换、缺页处理和页面换入换出会消耗 CPU 时间与 I/O 时间" },
+      { "label": "C", "text": "所有进程必须共享同一个地址空间" },
+      { "label": "D", "text": "程序不能再使用逻辑地址" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟内存提升了地址空间抽象和主存利用率，但地址转换需要硬件结构支持，缺页时还可能进入内核并发生磁盘 I/O，因此会带来明显运行时开销。",
+    "tags": ["memory", "virtual-memory", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "memory-virtual-12",
+    "title": "调入与替换问题",
+    "question": "虚拟内存管理中，“调入问题”和“替换问题”分别关注什么？",
+    "options": [
+      { "label": "A", "text": "调入关注地址位数，替换关注指令编码" },
+      { "label": "B", "text": "调入关注何时、哪些页进入主存，替换关注主存不足时换出哪些页" },
+      { "label": "C", "text": "调入关注 CPU 调度，替换关注进程创建" },
+      { "label": "D", "text": "调入只发生在 cache 中，替换只发生在寄存器中" }
+    ],
+    "answer": "B",
+    "explanation": "虚拟内存需要决定哪些程序和数据页在何时进入主存；当主存没有足够空闲页框时，还要按页面置换策略选择牺牲页换出。",
+    "tags": ["memory", "virtual-memory", "exam"],
+    "difficulty": "medium"
   }
 ]

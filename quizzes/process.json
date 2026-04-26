@@ -15,6 +15,126 @@
     "difficulty": "easy"
   },
   {
+    "id": "process-thread-02",
+    "title": "线程的提出",
+    "question": "引入线程主要是为了解决进程模型中的哪类问题？",
+    "options": [
+      { "label": "A", "text": "把资源拥有者和可执行单元完全绑定在一起，降低协作灵活性" },
+      { "label": "B", "text": "让每个线程都拥有完全独立的地址空间" },
+      { "label": "C", "text": "取消操作系统对并发执行的支持" },
+      { "label": "D", "text": "让所有程序只能串行运行" }
+    ],
+    "answer": "A",
+    "explanation": "传统进程同时承担资源拥有者和执行单元两个角色，进程间通信和切换开销较大。线程把执行单元从进程中分离出来，使同一进程内可以有多个较轻量的执行流。",
+    "tags": ["process", "concurrency", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-thread-03",
+    "title": "线程共享与私有状态",
+    "question": "同一进程内多个线程之间，下面哪种说法最准确？",
+    "options": [
+      { "label": "A", "text": "通常共享地址空间和进程资源，但各自拥有执行现场，如寄存器状态和栈" },
+      { "label": "B", "text": "每个线程都拥有独立页表和完全独立地址空间" },
+      { "label": "C", "text": "所有线程必须共享同一个程序计数器和同一个栈" },
+      { "label": "D", "text": "线程之间不能访问同一进程的数据" }
+    ],
+    "answer": "A",
+    "explanation": "线程共享所属进程的地址空间、打开文件等资源，所以通信成本低；但线程作为独立执行流，需要各自保存程序计数器、寄存器和栈等执行现场。",
+    "tags": ["process", "concurrency", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-04",
+    "title": "多线程适用场景",
+    "question": "下列哪种场景最能体现多线程的优势？",
+    "options": [
+      { "label": "A", "text": "单核上一个完全不等待 I/O 的短小计算任务" },
+      { "label": "B", "text": "任务中既有计算又有频繁 I/O 等待，等待期间还有其他工作可做" },
+      { "label": "C", "text": "所有任务都必须严格按固定顺序执行，不能交错" },
+      { "label": "D", "text": "程序只执行一次简单赋值后立即退出" }
+    ],
+    "answer": "B",
+    "explanation": "多线程适合把可并发推进的工作拆成多个执行流，尤其在某些线程等待 I/O 时，其他线程仍可运行。若任务很短或几乎没有等待，线程创建和切换开销可能抵消收益。",
+    "tags": ["process", "concurrency", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-05",
+    "title": "用户级线程",
+    "question": "关于用户级线程（ULT），下列说法最准确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "线程管理主要由用户态线程库完成，内核通常不知道这些用户级线程的存在" },
+      { "label": "B", "text": "每个用户级线程都必须对应一个内核线程，且只能由内核调度" },
+      { "label": "C", "text": "用户级线程切换一定需要切换页表" },
+      { "label": "D", "text": "用户级线程只能运行在多处理器系统上" }
+    ],
+    "answer": "A",
+    "explanation": "用户级线程由语言运行时或线程库在用户态管理，切换通常不需要陷入内核，因此开销较低；但内核只看到所属进程，无法直接按这些线程进行调度。",
+    "tags": ["process", "concurrency", "kernel"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-06",
+    "title": "用户级线程阻塞问题",
+    "question": "在纯用户级线程模型中，一个线程执行阻塞式系统调用时，常见问题是什么？",
+    "options": [
+      { "label": "A", "text": "内核可能阻塞整个进程，导致该进程内其他用户级线程也无法继续运行" },
+      { "label": "B", "text": "阻塞只会影响该用户级线程，内核一定能继续调度同进程其他用户级线程" },
+      { "label": "C", "text": "系统调用不会进入内核，所以不可能阻塞" },
+      { "label": "D", "text": "阻塞会自动把用户级线程转换成独立进程" }
+    ],
+    "answer": "A",
+    "explanation": "纯 ULT 中内核调度对象通常是进程而不是用户级线程。若一个用户级线程触发会阻塞进程的系统调用，内核可能让整个进程等待，其他 ULT 也随之停住。",
+    "tags": ["process", "concurrency", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-07",
+    "title": "内核级线程",
+    "question": "内核级线程（KLT）相对纯用户级线程的一个重要优势是什么？",
+    "options": [
+      { "label": "A", "text": "内核可以感知并调度线程，阻塞通常发生在线程级别，并可在多处理器上并行运行同进程多个线程" },
+      { "label": "B", "text": "线程切换永远不需要进入内核，因此没有管理开销" },
+      { "label": "C", "text": "所有线程必须共享同一个栈，节省全部内存" },
+      { "label": "D", "text": "内核级线程不能执行系统调用" }
+    ],
+    "answer": "A",
+    "explanation": "KLT 是内核可见的调度实体，内核能够把同一进程的不同线程调度到不同处理器上；某个线程阻塞时，也不必阻塞整个进程的所有线程。",
+    "tags": ["process", "concurrency", "kernel"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-08",
+    "title": "内核级线程开销",
+    "question": "内核级线程的主要代价通常体现在哪里？",
+    "options": [
+      { "label": "A", "text": "线程创建、撤销和切换需要内核参与，模式切换和内核数据结构维护带来额外开销" },
+      { "label": "B", "text": "内核级线程无法被操作系统调度" },
+      { "label": "C", "text": "内核级线程一定不能在多处理器上运行" },
+      { "label": "D", "text": "内核级线程会让进程之间失去地址空间隔离" }
+    ],
+    "answer": "A",
+    "explanation": "KLT 的管理由内核完成，功能更强但开销也更高。线程操作可能涉及陷入内核、调度器、内核栈和控制块等数据结构维护。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-thread-09",
+    "title": "混合线程模型",
+    "question": "关于 Many-to-One、One-to-One 和 Many-to-Many 线程模型，下列说法正确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "Many-to-One 通常无法让同一进程的多个用户线程在多个 CPU 上真正并行" },
+      { "label": "B", "text": "One-to-One 会把所有用户线程映射到同一个内核线程" },
+      { "label": "C", "text": "Many-to-Many 完全没有实现复杂度和调度开销" },
+      { "label": "D", "text": "三种模型都要求用户线程数量必须等于内核线程数量" }
+    ],
+    "answer": "A",
+    "explanation": "Many-to-One 把多个用户线程映射到一个内核调度实体，内核无法把它们分配到多个处理器并行执行；One-to-One 是一个用户线程对应一个内核线程，Many-to-Many 则在并发度和开销之间折中。",
+    "tags": ["process", "concurrency", "tricky"],
+    "difficulty": "hard"
+  },
+  {
     "id": "process-mode-switch-01",
     "title": "陷入内核与进程切换",
     "question": "用户进程执行系统调用时，下面哪项描述更准确？",
@@ -27,6 +147,231 @@
     "answer": "C",
     "explanation": "系统调用会触发受控的特权级切换，进入内核执行服务例程；是否调度其他进程取决于系统调用行为、阻塞与调度策略。",
     "tags": ["kernel", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-01",
+    "title": "进程与程序",
+    "question": "关于程序和进程的关系，下列哪项描述最准确？",
+    "options": [
+      { "label": "A", "text": "程序和进程都是静态的磁盘文件" },
+      { "label": "B", "text": "程序是静态实体，进程是程序在数据集合上的一次动态运行过程" },
+      { "label": "C", "text": "一个程序在任意时刻只能对应一个进程" },
+      { "label": "D", "text": "进程只包含程序代码，不包含数据和控制信息" }
+    ],
+    "answer": "B",
+    "explanation": "程序是静态的代码和数据描述；进程是程序运行起来之后形成的动态实体，通常由程序、数据和 PCB 等组成，是系统进行资源分配和调度管理的重要单位。",
+    "tags": ["process", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-02",
+    "title": "并发与并行",
+    "question": "在单核处理机上，多个进程看起来同时推进，通常体现的是哪种概念？",
+    "options": [
+      { "label": "A", "text": "并行：多个进程在同一时刻分别运行在不同处理机上" },
+      { "label": "B", "text": "并发：多个进程的执行在时间上交替推进并发生重叠" },
+      { "label": "C", "text": "串行：一个进程必须完全结束后另一个进程才能开始" },
+      { "label": "D", "text": "独占：每个进程都永久占有一个独立 CPU" }
+    ],
+    "answer": "B",
+    "explanation": "单核系统同一时刻只能执行一个执行流，但操作系统可以通过调度让多个进程在时间上交替推进，因此体现的是并发而不是真正的并行。",
+    "tags": ["process", "concurrency", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-03",
+    "title": "Bernstein 条件",
+    "question": "两个程序段 S1 和 S2 并发执行仍能保证结果可复现，关键条件是什么？",
+    "options": [
+      { "label": "A", "text": "R(S2) 与 W(S1)、R(S1) 与 W(S2)、W(S1) 与 W(S2) 均不存在交集" },
+      { "label": "B", "text": "只要两个程序段读取同一个变量，就一定不能并发执行" },
+      { "label": "C", "text": "只要两个程序段写入不同变量，结果就一定不可复现" },
+      { "label": "D", "text": "只需保证两个程序段的运行时间完全相同" }
+    ],
+    "answer": "A",
+    "explanation": "Bernstein 条件排除的是读写冲突和写写冲突。如果一个程序段会写另一个程序段要读或要写的数据，并发执行结果就可能依赖具体交错顺序。",
+    "tags": ["process", "concurrency", "tricky", "exam"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "process-state-control-04",
+    "title": "进程创建",
+    "question": "下列哪种情况最不属于典型的进程创建触发场景？",
+    "options": [
+      { "label": "A", "text": "提交一个批处理作业" },
+      { "label": "B", "text": "用户登录后，系统创建服务进程" },
+      { "label": "C", "text": "已有进程请求创建子进程" },
+      { "label": "D", "text": "正在执行的进程等待磁盘 I/O 完成" }
+    ],
+    "answer": "D",
+    "explanation": "提交作业、用户登录或已有进程派生新进程都可能触发进程创建；等待磁盘 I/O 通常会导致当前进程从执行状态转为阻塞状态，而不是创建新进程。",
+    "tags": ["process", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-05",
+    "title": "就绪与阻塞",
+    "question": "某进程已经获得除 CPU 以外的运行所需资源，只等待调度器分配处理机，它处于什么状态？",
+    "options": [
+      { "label": "A", "text": "执行状态" },
+      { "label": "B", "text": "阻塞状态" },
+      { "label": "C", "text": "就绪状态" },
+      { "label": "D", "text": "终止状态" }
+    ],
+    "answer": "C",
+    "explanation": "就绪状态表示进程已经具备运行条件，只差 CPU；阻塞状态则表示进程正在等待某个事件或资源，即使 CPU 空闲也暂时不能继续执行。",
+    "tags": ["process", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-06",
+    "title": "状态转换",
+    "question": "正在执行的进程因为等待磁盘 I/O 完成而暂时不能继续运行，典型的状态转换是哪一项？",
+    "options": [
+      { "label": "A", "text": "执行状态 → 就绪状态" },
+      { "label": "B", "text": "执行状态 → 阻塞状态" },
+      { "label": "C", "text": "阻塞状态 → 执行状态" },
+      { "label": "D", "text": "就绪状态 → 阻塞状态" }
+    ],
+    "answer": "B",
+    "explanation": "进程在执行时主动等待 I/O、信号或其他事件，会放弃处理机并进入阻塞状态。时间片用完或被抢占更常见的是从执行转为就绪。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-07",
+    "title": "挂起状态",
+    "question": "引入挂起状态后，关于“就绪挂起”的理解，下列哪项最准确？",
+    "options": [
+      { "label": "A", "text": "进程在内存中等待 CPU，分配处理机后即可运行" },
+      { "label": "B", "text": "进程已被换出到外存，具备运行条件，但需要先换入内存再参与调度" },
+      { "label": "C", "text": "进程正在 CPU 上执行，但随时可能被中断" },
+      { "label": "D", "text": "进程正在等待 I/O 完成，事件未发生前不能运行" }
+    ],
+    "answer": "B",
+    "explanation": "挂起表示进程被暂时移出内存。就绪挂起的进程不缺等待事件，主要限制是当前不在内存中；阻塞挂起才是既被换出又在等待事件。",
+    "tags": ["process", "memory", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-08",
+    "title": "原语",
+    "question": "关于操作系统原语，下列哪项描述最准确？",
+    "options": [
+      { "label": "A", "text": "原语可以在执行到一半时被任意中断并交给用户态程序继续完成" },
+      { "label": "B", "text": "原语是一段完成特定功能、执行过程连续不可分割的核心操作" },
+      { "label": "C", "text": "原语只存在于应用程序库中，与内核无关" },
+      { "label": "D", "text": "原语的作用是让当前进程永久阻塞" }
+    ],
+    "answer": "B",
+    "explanation": "原语用于实现创建、撤销、阻塞、唤醒等核心控制操作，要求执行过程具有不可分割性，通常在内核态完成，以避免关键状态被并发破坏。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-09",
+    "title": "PCB 作用",
+    "question": "为什么 PCB 是进程管理与控制的核心数据结构？",
+    "options": [
+      { "label": "A", "text": "因为 PCB 保存进程标识、当前状态、现场、资源清单等信息，使 OS 能识别和管理进程" },
+      { "label": "B", "text": "因为 PCB 只保存可执行程序的源代码" },
+      { "label": "C", "text": "因为所有进程共享同一个 PCB，可以减少内存占用" },
+      { "label": "D", "text": "因为没有 PCB，OS 也能完整恢复任意进程的执行现场" }
+    ],
+    "answer": "A",
+    "explanation": "PCB 把进程的身份、状态、调度信息、现场保护信息和资源占用等集中记录下来。创建、撤销、调度和恢复进程都依赖这些控制信息。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-10",
+    "title": "并发执行特征",
+    "question": "程序并发执行后出现“不可再现性”的根本原因通常是什么？",
+    "options": [
+      { "label": "A", "text": "程序代码被永久删除" },
+      { "label": "B", "text": "多个程序共享资源，执行交错顺序可能改变共享状态" },
+      { "label": "C", "text": "CPU 不再执行任何指令" },
+      { "label": "D", "text": "所有输入数据都会自动变成随机数" }
+    ],
+    "answer": "B",
+    "explanation": "并发程序可能读写同一资源，实际执行顺序又由调度决定；如果存在读写或写写冲突，相同初始条件下也可能得到不同结果。",
+    "tags": ["process", "concurrency", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-11",
+    "title": "时间片用完的状态转换",
+    "question": "正在执行的进程因时间片用完被调度器剥夺 CPU，典型状态转换是哪一项？",
+    "options": [
+      { "label": "A", "text": "执行状态 → 就绪状态" },
+      { "label": "B", "text": "执行状态 → 阻塞状态" },
+      { "label": "C", "text": "阻塞状态 → 执行状态" },
+      { "label": "D", "text": "就绪状态 → 挂起状态" }
+    ],
+    "answer": "A",
+    "explanation": "时间片用完表示进程仍具备运行条件，只是暂时失去处理机，因此通常回到就绪队列；等待 I/O 或事件才会转入阻塞状态。",
+    "tags": ["process", "scheduling", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-12",
+    "title": "阻塞与唤醒",
+    "question": "一个阻塞进程等待的 I/O 事件完成后，通常不会直接变为执行状态，而是先进入就绪状态。原因是什么？",
+    "options": [
+      { "label": "A", "text": "它还需要等待调度器分配 CPU" },
+      { "label": "B", "text": "它的程序代码已经被删除" },
+      { "label": "C", "text": "阻塞进程不能再参与任何调度" },
+      { "label": "D", "text": "I/O 完成一定会让进程终止" }
+    ],
+    "answer": "A",
+    "explanation": "事件完成只说明阻塞原因消失，进程重新具备运行条件；是否真正执行还取决于处理机分配，所以通常先转入就绪队列。",
+    "tags": ["process", "scheduling", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "process-state-control-13",
+    "title": "PCB 中的现场保护区",
+    "question": "PCB 中设置现场保护区的主要目的是什么？",
+    "options": [
+      { "label": "A", "text": "保存 CPU 寄存器等执行现场，以便进程以后恢复运行" },
+      { "label": "B", "text": "保存源代码注释，便于重新编译程序" },
+      { "label": "C", "text": "永久保存所有磁盘文件内容" },
+      { "label": "D", "text": "让进程绕过内核直接访问所有设备" }
+    ],
+    "answer": "A",
+    "explanation": "进程失去 CPU 时，操作系统需要保存程序计数器、寄存器、栈指针等现场信息；下次调度该进程时再恢复这些信息，才能从断点继续执行。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-14",
+    "title": "进程撤销场景",
+    "question": "下列哪项最符合进程撤销而不是进程创建的场景？",
+    "options": [
+      { "label": "A", "text": "用户提交一个新的批处理作业" },
+      { "label": "B", "text": "已有进程调用接口创建子进程" },
+      { "label": "C", "text": "进程正常结束或因错误失败而被系统终止" },
+      { "label": "D", "text": "用户登录后系统为其建立服务进程" }
+    ],
+    "answer": "C",
+    "explanation": "正常结束、出错失败、超时或用户退出等都可能触发撤销；提交作业、登录服务和创建子进程更常见于进程创建。",
+    "tags": ["process", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "process-state-control-15",
+    "title": "模态切换与上下文切换",
+    "question": "关于陷入内核和进程上下文切换，下列说法最准确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "只要从用户态进入内核态，就一定切换到另一个进程" },
+      { "label": "B", "text": "陷入内核是特权级变化；进程上下文切换还涉及调度并切换到另一个进程的执行现场" },
+      { "label": "C", "text": "进程上下文切换不需要保存任何寄存器" },
+      { "label": "D", "text": "系统调用只能在用户态完整执行，不能进入内核态" }
+    ],
+    "answer": "B",
+    "explanation": "系统调用、中断或异常会导致 CPU 进入内核态，但内核处理完后可能仍返回原进程；只有调度器决定换另一个进程运行时，才发生通常意义上的进程上下文切换。",
+    "tags": ["process", "kernel", "tricky"],
     "difficulty": "medium"
   }
 ]
