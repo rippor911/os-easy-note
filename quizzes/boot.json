@@ -1,0 +1,302 @@
+[
+  {
+    "id": "boot-intro-01",
+    "title": "操作系统的角色",
+    "question": "关于操作系统的作用，下面哪种说法最准确？",
+    "options": [
+      { "label": "A", "text": "操作系统只是一个图形界面，负责让用户点击程序" },
+      { "label": "B", "text": "操作系统在用户程序和硬件之间提供抽象、资源管理和保护" },
+      { "label": "C", "text": "操作系统只负责启动计算机，启动完成后不再参与程序运行" },
+      { "label": "D", "text": "操作系统让所有程序都可以直接访问全部硬件寄存器" }
+    ],
+    "answer": "B",
+    "explanation": "操作系统的核心是向上提供接口和抽象，向下管理 CPU、内存、I/O 等硬件资源，并通过权限和隔离机制保护内核与进程。",
+    "tags": ["boot", "os-intro", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-intro-02",
+    "title": "抽象的意义",
+    "question": "文件系统体现了操作系统的哪一类核心思想？",
+    "options": [
+      { "label": "A", "text": "把复杂磁盘细节抽象成文件、目录等更容易使用的对象" },
+      { "label": "B", "text": "让应用程序直接指定磁头、柱面和扇区完成所有 I/O" },
+      { "label": "C", "text": "取消所有设备驱动，让程序自己控制硬件" },
+      { "label": "D", "text": "只提高 CPU 主频，不改变程序访问数据的方式" }
+    ],
+    "answer": "A",
+    "explanation": "抽象的价值在于屏蔽硬件复杂性。文件系统让程序以文件和目录为单位访问数据，而不必直接处理磁盘物理布局。",
+    "tags": ["boot", "abstraction", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-intro-03",
+    "title": "分时系统的影响",
+    "question": "分时系统把多个程序放到同一台机器上交替运行后，最直接推动了哪类机制的必要性？",
+    "options": [
+      { "label": "A", "text": "让每个用户程序都独占全部物理内存和 I/O 设备" },
+      { "label": "B", "text": "通过中断、系统调用、内核态和内存保护来受控共享硬件" },
+      { "label": "C", "text": "取消调度器，因为程序必须严格串行执行" },
+      { "label": "D", "text": "关闭虚拟内存，使所有程序使用相同物理地址" }
+    ],
+    "answer": "B",
+    "explanation": "分时系统要求多个程序共享 CPU、内存和设备，因此必须限制用户程序权限，并通过中断、调度、系统调用、地址空间和内存保护来协调共享。",
+    "tags": ["boot", "history", "kernel"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-intro-04",
+    "title": "中断与陷阱",
+    "question": "关于中断 interrupt 和陷阱 trap，下面哪项最准确？",
+    "options": [
+      { "label": "A", "text": "中断通常由当前指令主动触发，陷阱通常由外设异步触发" },
+      { "label": "B", "text": "中断和陷阱都一定表示程序发生了不可恢复错误" },
+      { "label": "C", "text": "中断通常是异步外部事件，系统调用常被视为同步陷阱" },
+      { "label": "D", "text": "陷阱发生后 CPU 不会进入内核态" }
+    ],
+    "answer": "C",
+    "explanation": "中断多来自 I/O 设备或定时器，和当前指令不一定相关；系统调用是程序有意触发的受控陷入内核，通常属于同步陷阱。",
+    "tags": ["boot", "interrupt", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-intro-05",
+    "title": "虚拟特征",
+    "question": "下面哪项最能体现操作系统的“虚拟”特征？",
+    "options": [
+      { "label": "A", "text": "让多个进程看到各自独立的虚拟地址空间" },
+      { "label": "B", "text": "禁止任何程序使用内存" },
+      { "label": "C", "text": "让 CPU 不再执行机器指令" },
+      { "label": "D", "text": "把所有文件都复制到寄存器中" }
+    ],
+    "answer": "A",
+    "explanation": "虚拟化不是假的资源，而是通过映射、调度和保护把物理资源表现为更规则的逻辑资源。虚拟地址空间是典型例子。",
+    "tags": ["boot", "abstraction", "memory"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-intro-06",
+    "title": "机制与策略",
+    "question": "“机制与策略分离”在操作系统设计中通常表示什么？",
+    "options": [
+      { "label": "A", "text": "内核只保留硬件，不再提供任何软件接口" },
+      { "label": "B", "text": "机制提供能做什么，策略决定具体如何选择" },
+      { "label": "C", "text": "所有调度算法都必须写死在硬件里" },
+      { "label": "D", "text": "用户程序可以绕过内核直接修改页表" }
+    ],
+    "answer": "B",
+    "explanation": "机制是基本能力，例如切换进程、设置页表、阻塞或唤醒进程；策略是在具体场景下选择哪个进程、如何分配资源。",
+    "tags": ["boot", "kernel", "design"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-sequence-01",
+    "title": "Boot 的核心矛盾",
+    "question": "为什么说计算机启动是一个 bootstrapping 问题？",
+    "options": [
+      { "label": "A", "text": "必须先有程序运行才能初始化系统，但程序又依赖被初始化的运行环境" },
+      { "label": "B", "text": "启动过程中只能运行用户态程序，不能运行内核态程序" },
+      { "label": "C", "text": "启动只需要显示登录界面，不需要初始化硬件" },
+      { "label": "D", "text": "启动阶段不允许执行任何指令" }
+    ],
+    "answer": "A",
+    "explanation": "启动必须从极弱、固定、可靠的初始状态开始，先运行一小段程序，逐步初始化硬件并加载更复杂的软件。",
+    "tags": ["boot", "bootloader", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-sequence-02",
+    "title": "Bootloader 职责",
+    "question": "Bootloader 的主要职责不包括哪一项？",
+    "options": [
+      { "label": "A", "text": "初始化必要硬件，使系统具备最小运行环境" },
+      { "label": "B", "text": "把操作系统内核映像加载到内存" },
+      { "label": "C", "text": "跳转到操作系统内核入口" },
+      { "label": "D", "text": "长期负责所有用户进程的调度和内存回收" }
+    ],
+    "answer": "D",
+    "explanation": "Bootloader 只负责把系统带到内核可以接管的状态。长期调度、内存回收和资源管理是操作系统内核的职责。",
+    "tags": ["boot", "bootloader", "tricky"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-sequence-03",
+    "title": "MIPS kseg1",
+    "question": "MIPS 上电启动时选择 `kseg1` 区域作为可靠入口的重要原因是什么？",
+    "options": [
+      { "label": "A", "text": "它是用户态可直接访问的高速缓存区域" },
+      { "label": "B", "text": "它不依赖 TLB 和 Cache，重启时仍能可靠映射到物理地址" },
+      { "label": "C", "text": "它只能在分页机制完全建立后访问" },
+      { "label": "D", "text": "它会自动创建所有页表项" }
+    ],
+    "answer": "B",
+    "explanation": "启动早期不能假设 TLB 和 Cache 已可用。`kseg1` 是不经过 Cache 的直接映射区域，因此适合放置重启入口。",
+    "tags": ["boot", "mips", "memory"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-sequence-04",
+    "title": "Cache as RAM",
+    "question": "U-Boot 早期把一部分 Cache 当作临时 RAM 使用，主要是为了解决什么问题？",
+    "options": [
+      { "label": "A", "text": "DDR RAM 尚未配置好，但调用 C 函数需要栈" },
+      { "label": "B", "text": "让所有用户程序都运行在 Cache 中" },
+      { "label": "C", "text": "绕过所有寄存器初始化" },
+      { "label": "D", "text": "把内核永久存放在 Cache 中，避免加载到内存" }
+    ],
+    "answer": "A",
+    "explanation": "早期还不能可靠使用 DDR，但 C 代码需要栈。将部分 Cache 锁定为临时栈空间，可以让启动代码继续执行到内存控制器初始化完成。",
+    "tags": ["boot", "mips", "uboot"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-sequence-05",
+    "title": "内核接管控制权",
+    "question": "Bootloader 把 Linux 内核映像放到内存后，下一步的关键动作是什么？",
+    "options": [
+      { "label": "A", "text": "继续替内核调度所有用户进程" },
+      { "label": "B", "text": "跳转到内核入口，让内核开始建立自己的运行环境" },
+      { "label": "C", "text": "删除内核映像并重新执行 BIOS" },
+      { "label": "D", "text": "直接执行 `/bin/login`，绕过内核初始化" }
+    ],
+    "answer": "B",
+    "explanation": "控制权交接是启动链路的核心。Bootloader 准备参数和内核映像后跳到内核入口，随后由内核完成栈、页表、调度器、内存和设备等初始化。",
+    "tags": ["boot", "kernel", "linux"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-sequence-06",
+    "title": "传统 x86 启动顺序",
+    "question": "传统 x86 BIOS/MBR 启动链路中，下面顺序最合理的是哪一项？",
+    "options": [
+      { "label": "A", "text": "加电 -> BIOS -> POST -> 找启动设备 -> 读取 MBR -> Bootloader" },
+      { "label": "B", "text": "加电 -> 用户登录 -> BIOS -> MBR -> 内核" },
+      { "label": "C", "text": "加电 -> MBR -> POST -> BIOS -> Bootloader" },
+      { "label": "D", "text": "加电 -> `/sbin/init` -> BIOS -> Bootloader" }
+    ],
+    "answer": "A",
+    "explanation": "传统链路中 CPU 先跳到 BIOS 固定入口，BIOS 做硬件自检并按启动顺序寻找设备，然后读取 MBR，把控制权交给 Bootloader。",
+    "tags": ["boot", "x86", "bios"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-sequence-07",
+    "title": "MBR 结构",
+    "question": "传统 MBR 的 512 字节结构中，下面哪项正确？",
+    "options": [
+      { "label": "A", "text": "前 446 字节为启动代码和数据，随后 64 字节为分区表，最后 2 字节为启动签名" },
+      { "label": "B", "text": "全部 512 字节都必须存放文件系统目录项" },
+      { "label": "C", "text": "最后 2 字节固定为 `0x0000` 才能启动" },
+      { "label": "D", "text": "MBR 中可以直接保存任意数量的主分区表项" }
+    ],
+    "answer": "A",
+    "explanation": "MBR 由 446 字节启动代码、4 个 16 字节分区表项和 2 字节 `0x55aa` 启动签名组成，因此传统主分区表项数量受限。",
+    "tags": ["boot", "mbr", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-sequence-08",
+    "title": "GRUB stage1.5",
+    "question": "GRUB 引入 stage1.5 的主要目的是什么？",
+    "options": [
+      { "label": "A", "text": "识别文件系统，使后续阶段能从文件系统读取菜单、内核和 initrd" },
+      { "label": "B", "text": "永久替代 Linux 内核中的调度器" },
+      { "label": "C", "text": "关闭所有磁盘分区功能" },
+      { "label": "D", "text": "在用户登录后重新执行 BIOS" }
+    ],
+    "answer": "A",
+    "explanation": "MBR 中的 stage1 空间很小，通常只负责加载下一阶段。stage1.5 提供文件系统识别能力，stage2 才能加载菜单和内核映像。",
+    "tags": ["boot", "grub", "mbr"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-program-01",
+    "title": "程序与进程",
+    "question": "关于程序和进程，下面哪项最准确？",
+    "options": [
+      { "label": "A", "text": "程序是静态代码或文件，进程是程序的一次执行过程" },
+      { "label": "B", "text": "程序和进程完全等价，只是名称不同" },
+      { "label": "C", "text": "一个程序最多只能对应一个进程" },
+      { "label": "D", "text": "进程不需要任何内核管理数据结构" }
+    ],
+    "answer": "A",
+    "explanation": "程序存放在磁盘上，本身是静态对象；进程包含 PCB、地址空间、打开文件、寄存器现场等运行状态，是动态执行实体。",
+    "tags": ["boot", "process", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-program-02",
+    "title": "执行可执行文件",
+    "question": "用户通过 shell 执行一个可执行文件时，操作系统通常需要做什么？",
+    "options": [
+      { "label": "A", "text": "检查可执行文件头部，建立进程地址空间，并设置 CPU 上下文" },
+      { "label": "B", "text": "把源代码逐行解释成自然语言" },
+      { "label": "C", "text": "让程序直接覆盖内核代码段" },
+      { "label": "D", "text": "跳过调度器，使该程序永久独占 CPU" }
+    ],
+    "answer": "A",
+    "explanation": "执行程序时，内核需要识别文件格式，建立地址空间，映射代码和数据，设置入口、栈、参数等上下文，再把进程放入调度体系。",
+    "tags": ["boot", "process", "kernel"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-program-03",
+    "title": "缺页异常",
+    "question": "程序执行第一条指令时发生缺页异常，下面哪种说法一定正确？",
+    "options": [
+      { "label": "A", "text": "该程序一定写错了，必须立即终止" },
+      { "label": "B", "text": "内核会检查地址是否合法；若合法，可能调入页面后重试该指令" },
+      { "label": "C", "text": "缺页异常一定不需要进入内核" },
+      { "label": "D", "text": "缺页异常一定由键盘中断引起" }
+    ],
+    "answer": "B",
+    "explanation": "请求分页系统中，合法页面尚未调入时会触发缺页异常。内核处理后可以更新页表并重试指令；非法地址或权限错误才会导致错误结果。",
+    "tags": ["boot", "memory", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-program-04",
+    "title": "printf 输出路径",
+    "question": "`printf(\"hello world\\n\")` 通常不会直接做哪件事？",
+    "options": [
+      { "label": "A", "text": "通过 C 库格式化输出内容" },
+      { "label": "B", "text": "通过系统调用请求内核写标准输出" },
+      { "label": "C", "text": "经由终端、伪终端或窗口系统显示字符" },
+      { "label": "D", "text": "由用户程序直接控制显示器电子束或所有显存硬件细节" }
+    ],
+    "answer": "D",
+    "explanation": "普通用户程序通常通过库函数和系统调用输出数据，内核和设备/终端/窗口系统负责后续路径，而不是让用户程序直接操作全部显示硬件。",
+    "tags": ["boot", "syscall", "device"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "boot-program-05",
+    "title": "系统调用与上下文切换",
+    "question": "关于系统调用和进程上下文切换，下面哪项最准确？",
+    "options": [
+      { "label": "A", "text": "每次系统调用都必然切换到另一个进程" },
+      { "label": "B", "text": "系统调用表示从用户态进入内核态处理请求，不必然发生进程上下文切换" },
+      { "label": "C", "text": "进程上下文切换不需要保存任何寄存器状态" },
+      { "label": "D", "text": "系统调用只能由外部设备异步触发" }
+    ],
+    "answer": "B",
+    "explanation": "系统调用是一次受控的 mode switch。它可能在同一进程上下文内完成；进程上下文切换则由调度器切换执行实体，两者不能混为一谈。",
+    "tags": ["boot", "syscall", "process", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "boot-program-06",
+    "title": "程序运行链条",
+    "question": "下面哪条链路最符合一个普通程序从文件到运行的过程？",
+    "options": [
+      { "label": "A", "text": "源代码 -> 编译/链接 -> 可执行文件 -> 内核创建进程 -> 调度执行" },
+      { "label": "B", "text": "源代码 -> BIOS POST -> 用户登录 -> 物理磁头直接执行源代码" },
+      { "label": "C", "text": "可执行文件 -> 删除页表 -> 直接覆盖 Bootloader -> 输出结果" },
+      { "label": "D", "text": "程序运行不需要内核参与，只需要显示器刷新" }
+    ],
+    "answer": "A",
+    "explanation": "普通程序先变成可执行文件，再由内核装入并创建进程，设置地址空间和上下文，最后通过调度获得 CPU 运行。",
+    "tags": ["boot", "process", "exam"],
+    "difficulty": "easy"
+  }
+]
