@@ -596,12 +596,31 @@ function answerText(question: ObjectiveQuestion) {
   return question.answerText
 }
 
+function objectiveOptions(question: ObjectiveQuestion) {
+  if (question.type === 'true-false') {
+    return [
+      { label: boolLabel(true), text: '正确' },
+      { label: boolLabel(false), text: '错误' }
+    ]
+  }
+
+  if (question.type === 'single') return question.options
+  return []
+}
+
+function subjectiveQuestionText(question: SubjectiveQuestion) {
+  return [question.prompt, ...(question.details || [])].join('\n')
+}
+
 function recordObjective(question: ObjectiveQuestion) {
   recordQuestion({
     id: `exam:2025-midterm:${question.id}`,
     type: question.type === 'true-false' ? 'true-false' : question.type,
     collection: '2025-midterm',
     title: `2025 期中 - ${question.title}`,
+    question: question.question,
+    options: objectiveOptions(question),
+    explanation: question.explanation,
     selected: selectedText(question),
     answer: answerText(question),
     correct: isObjectiveCorrect(question),
@@ -624,6 +643,8 @@ function judgeSubjective(question: SubjectiveQuestion, correct: boolean) {
     type: 'subjective',
     collection: '2025-midterm',
     title: `2025 期中 - ${question.title}`,
+    question: subjectiveQuestionText(question),
+    explanation: question.rubric?.join('；'),
     selected: subjectiveAnswers.value[question.id],
     answer: question.answer.join('；'),
     correct,

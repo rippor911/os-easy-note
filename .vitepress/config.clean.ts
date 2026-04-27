@@ -291,7 +291,7 @@ export default defineConfig({
     nav: [
       { text: '\u9996\u9875', link: '/' },
       { text: '\u77e5\u8bc6\u7ed3\u6784', link: '/knowledge-map' },
-      { text: '\u6807\u7b7e', link: '/tags' },
+      { text: '\u63a8\u8350\u8d44\u6599', link: '/resources' },
       { text: '\u5b66\u4e60\u8fdb\u5ea6', link: '/progress' }
     ],
     sidebar: buildSidebar(),

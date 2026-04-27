@@ -38,6 +38,8 @@ function check() {
     type: 'blank',
     collection: 'inline',
     title: props.question,
+    question: props.question,
+    explanation: props.explanation,
     selected: input.value,
     answer: answers.value.join(' / '),
     correct: correct.value,

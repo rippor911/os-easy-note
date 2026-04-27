@@ -57,6 +57,8 @@ function check() {
     type: 'blank',
     collection: 'inline',
     title: props.question,
+    question: props.question,
+    explanation: props.explanation,
     selected: props.items.map((item, index) => `${item.label}=${inputs.value[index]}`).join('; '),
     answer: props.items.map((item) => `${item.label}=${standardAnswer(item)}`).join('; '),
     correct: correct.value,

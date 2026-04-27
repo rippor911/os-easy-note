@@ -9,7 +9,6 @@ import ProgressDashboard from '../../components/ProgressDashboard.vue'
 import Quiz from '../../components/Quiz.vue'
 import QuizSet from '../../components/QuizSet.vue'
 import Reveal from '../../components/Reveal.vue'
-import TagFilter from '../../components/TagFilter.vue'
 import Layout from './Layout.vue'
 import './style.css'
 
@@ -24,7 +23,6 @@ export default {
     app.component('Reveal', Reveal)
     app.component('CompareCard', CompareCard)
     app.component('ExamPaper', ExamPaper)
-    app.component('TagFilter', TagFilter)
     app.component('ProgressDashboard', ProgressDashboard)
     app.component('Mermaid', Mermaid)
   }

@@ -10,6 +10,12 @@ export interface QuestionRecord {
   type: 'single' | 'blank' | 'true-false' | 'subjective'
   collection: string
   title: string
+  question?: string
+  options?: Array<{
+    label: string
+    text: string
+  }>
+  explanation?: string
   selected: string
   answer: string
   correct: boolean

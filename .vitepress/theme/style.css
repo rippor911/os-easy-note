@@ -60,6 +60,15 @@
   text-underline-offset: 3px;
 }
 
+.vp-doc .custom-block.note {
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 42%, var(--vp-c-divider));
+  background: color-mix(in srgb, var(--vp-c-brand-1) 10%, var(--vp-c-bg));
+}
+
+.vp-doc .custom-block.note .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
+
 .doc-meta {
   display: flex;
   flex-wrap: wrap;
@@ -74,7 +83,6 @@
   font-size: 13px;
 }
 
-.doc-meta__group,
 .doc-meta__item {
   display: inline-flex;
   gap: 8px;
@@ -87,17 +95,6 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.doc-meta__tag {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 25%, transparent);
-  border-radius: 999px;
-  padding: 2px 9px;
-  color: var(--vp-c-brand-1);
-  background: color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
-  font-weight: 600;
 }
 
 .study-card {

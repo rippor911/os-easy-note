@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { data as pages, type NotePage } from '../.vitepress/theme/data/pages.data'
+import { quizCollections, type QuizOption } from './quizBank'
 import {
   clearLearningProgress,
   getDoneQuestionIds,
@@ -14,13 +15,23 @@ const readPages = ref<ReadPageRecord[]>([])
 const doneQuestions = ref<string[]>([])
 const wrongQuestions = ref<QuestionRecord[]>([])
 
+interface WrongQuestionView {
+  record: QuestionRecord
+  title: string
+  question: string
+  options: QuizOption[]
+  explanation: string
+}
+
+const utilityPageUrls = new Set(['/', '/progress', '/knowledge-map', '/exams', '/resources'])
+
 const studySections = [
   { label: 'OS Boot', prefix: '/OS Boot/' },
   { label: '内存管理', prefix: '/内存管理/' },
   { label: '进程与线程', prefix: '/进程与线程/' }
 ]
 
-const notePages = computed(() => pages.filter((page: NotePage) => !['/', '/tags', '/progress', '/knowledge-map'].includes(page.url)))
+const notePages = computed(() => pages.filter((page: NotePage) => !utilityPageUrls.has(page.url)))
 const readPageKeys = computed(() => new Set(readPages.value.map((page) => page.path.replace(/\/$/, ''))))
 const sortedReadPages = computed(() => [...readPages.value].sort((a, b) => b.readAt - a.readAt))
 const readRate = computed(() => {
@@ -42,6 +53,38 @@ const sectionCoverage = computed(() => studySections
     }
   })
   .filter((section) => section.total))
+const wrongQuestionViews = computed<WrongQuestionView[]>(() => wrongQuestions.value.map((record) => {
+  const bankQuestion = findBankQuestion(record)
+
+  return {
+    record,
+    title: bankQuestion?.title || record.title,
+    question: record.question || bankQuestion?.question || record.title,
+    options: record.options || bankQuestion?.options || [],
+    explanation: record.explanation || bankQuestion?.explanation || ''
+  }
+}))
+
+function findBankQuestion(record: QuestionRecord) {
+  const collection = quizCollections[record.collection]
+  if (!collection) return undefined
+
+  const quizIdPrefix = `quiz:${record.collection}:`
+  const questionId = record.id.startsWith(quizIdPrefix) ? record.id.slice(quizIdPrefix.length) : record.id
+  return collection.find((question) => question.id === questionId)
+}
+
+function isSelectedOption(record: QuestionRecord, label: string) {
+  return record.selected === label
+}
+
+function isAnswerOption(record: QuestionRecord, label: string) {
+  return record.answer === label
+}
+
+function displayValue(value: string) {
+  return value?.trim() || '未作答'
+}
 
 function refresh() {
   readPages.value = getReadPages()
@@ -128,9 +171,37 @@ onMounted(refresh)
     <section class="progress__panel">
       <h2>错题记录</h2>
       <p v-if="!wrongQuestions.length">暂无错题。答错客观题，或把主观题自主判为错误后，会出现在这里。</p>
-      <article v-for="question in wrongQuestions" :key="question.id" class="progress__wrong">
-        <strong>{{ question.title }}</strong>
-        <span>你的答案：{{ question.selected }}；标准答案：{{ question.answer }}</span>
+      <article v-for="item in wrongQuestionViews" :key="item.record.id" class="progress__wrong">
+        <header class="progress__wrong-head">
+          <strong>{{ item.title }}</strong>
+          <span>{{ formatTime(item.record.at) }}</span>
+        </header>
+
+        <p class="progress__wrong-question">{{ item.question }}</p>
+
+        <div v-if="item.options.length" class="progress__wrong-options">
+          <div
+            v-for="option in item.options"
+            :key="option.label"
+            class="progress__wrong-option"
+            :class="{
+              'is-answer': isAnswerOption(item.record, option.label),
+              'is-selected': isSelectedOption(item.record, option.label)
+            }"
+          >
+            <strong>{{ option.label }}</strong>
+            <span>{{ option.text }}</span>
+          </div>
+        </div>
+
+        <div class="progress__wrong-answer">
+          <span>你的答案：{{ displayValue(item.record.selected) }}</span>
+          <span>标准答案：{{ displayValue(item.record.answer) }}</span>
+        </div>
+
+        <p v-if="item.explanation" class="progress__wrong-explanation">
+          解析：{{ item.explanation }}
+        </p>
       </article>
     </section>
   </section>
@@ -275,12 +346,73 @@ onMounted(refresh)
 
 .progress__wrong {
   display: grid;
-  gap: 6px;
+  gap: 12px;
   margin-top: 10px;
   padding: 12px;
 }
 
-.progress__wrong span,
+.progress__wrong-head,
+.progress__wrong-answer {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.progress__wrong-question {
+  margin: 0;
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.progress__wrong-options {
+  display: grid;
+  gap: 8px;
+}
+
+.progress__wrong-option {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--os-radius);
+  padding: 9px 10px;
+  background: var(--vp-c-bg-soft);
+}
+
+.progress__wrong-option strong {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--vp-c-bg);
+}
+
+.progress__wrong-option.is-answer {
+  border-color: var(--os-c-green);
+  background: color-mix(in srgb, var(--os-c-green) 10%, transparent);
+}
+
+.progress__wrong-option.is-selected:not(.is-answer) {
+  border-color: var(--os-c-red);
+  background: color-mix(in srgb, var(--os-c-red) 10%, transparent);
+}
+
+.progress__wrong-answer {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 10px;
+}
+
+.progress__wrong-explanation {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  line-height: 1.7;
+}
+
+.progress__wrong-head span,
+.progress__wrong-answer span,
 .progress__row span {
   color: var(--vp-c-text-2);
 }
@@ -301,6 +433,12 @@ onMounted(refresh)
   }
 
   .progress__row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .progress__wrong-head,
+  .progress__wrong-answer {
     flex-direction: column;
     gap: 4px;
   }
