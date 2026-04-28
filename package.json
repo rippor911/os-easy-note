@@ -10,10 +10,11 @@
     "dev": "vitepress dev",
     "prebuild": "node scripts/clean-dist.mjs",
     "build": "vitepress build",
-    "preview": "vitepress preview",
+    "preview": "wrangler dev",
     "typecheck": "vue-tsc --noEmit",
     "check:docs": "node scripts/check-docs.mjs",
-    "new:note": "node scripts/new-note.mjs"
+    "new:note": "node scripts/new-note.mjs",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "markdown-it-mathjax3": "^4.3.2",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2",
-    "vue-tsc": "^2.2.0"
+    "vue-tsc": "^2.2.0",
+    "wrangler": "^4.85.0"
   }
 }
