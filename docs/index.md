@@ -61,8 +61,7 @@ import { withBase } from 'vitepress'
 ## 辅助入口
 
 - [知识地图](./knowledge-map.md)：从整体结构定位概念关系。
-- [期中考试真题](./exams.md)：打开或下载已收录的期中试题 PDF。
-- [补充综合测试](./addition-review.md)：集中复盘这次补充整理出来的易错题。
+- [考试与综合测试](./exams/)：集中进入 2024 期中、2025 期中和综合补充测试。
 - [推荐资料](./resources.md)：补充教材、课程和实验参考链接。
 - [学习进度](./progress.md)：查看本地阅读、做题和错题记录。
 - [GitHub repository](https://github.com/rippor911/os-easy-note)：反馈错误或补充内容。

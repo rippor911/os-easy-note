@@ -1,8 +1,6 @@
 ﻿{
   "top": [
     "knowledge-map.md",
-    "exams.md",
-    "addition-review.md",
     "resources.md",
     "progress.md"
   ],
@@ -38,6 +36,16 @@
         { "file": "4_1 \u8fdb\u7a0b\u72b6\u6001\u4e0e\u63a7\u5236.md", "text": "\u8fdb\u7a0b\u72b6\u6001\u4e0e\u63a7\u5236" },
         { "file": "4_2 \u7ebf\u7a0b.md", "text": "\u7ebf\u7a0b" },
         { "file": "4_3 \u540c\u6b65\u4e0e\u4e92\u65a5.md", "text": "\u540c\u6b65\u4e0e\u4e92\u65a5" }
+      ]
+    },
+    {
+      "dir": "exams",
+      "text": "\u8003\u8bd5\u4e0e\u7efc\u5408\u6d4b\u8bd5",
+      "pages": [
+        "index.md",
+        { "file": "2024-midterm.md", "text": "2024 \u671f\u4e2d" },
+        { "file": "2025-midterm.md", "text": "2025 \u671f\u4e2d" },
+        { "file": "addition-review.md", "text": "\u7efc\u5408\u8865\u5145\u6d4b\u8bd5" }
       ]
     }
   ]

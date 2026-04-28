@@ -23,7 +23,8 @@ interface WrongQuestionView {
   explanation: string
 }
 
-const utilityPageUrls = new Set(['/', '/progress', '/knowledge-map', '/exams', '/resources'])
+const utilityPageUrls = new Set(['/', '/progress', '/knowledge-map', '/resources'])
+const utilityPagePrefixes = ['/exams/']
 
 const studySections = [
   { label: 'OS Boot', prefix: '/OS Boot/' },
@@ -31,7 +32,9 @@ const studySections = [
   { label: '进程与线程', prefix: '/进程与线程/' }
 ]
 
-const notePages = computed(() => pages.filter((page: NotePage) => !utilityPageUrls.has(page.url)))
+const notePages = computed(() => pages.filter((page: NotePage) => (
+  !utilityPageUrls.has(page.url) && !utilityPagePrefixes.some((prefix) => page.url.startsWith(prefix))
+)))
 const readPageKeys = computed(() => new Set(readPages.value.map((page) => page.path.replace(/\/$/, ''))))
 const sortedReadPages = computed(() => [...readPages.value].sort((a, b) => b.readAt - a.readAt))
 const readRate = computed(() => {

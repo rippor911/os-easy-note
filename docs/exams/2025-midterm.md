@@ -1,15 +1,11 @@
 ---
-title: 期中考试真题
+title: 2025 期中考试
 tags: [exam, midterm]
-difficulty: overview
-review: 2026-04-26
+difficulty: medium
+review: 2026-04-28
 ---
 
-# 期中考试真题
-
-这里整理已收录的操作系统期中真题，适合作为整章复习后的限时自测材料。
-
-## 2025 期中考试交互版
+# 2025 期中考试
 
 <ExamPaper />
 
@@ -21,6 +17,6 @@ review: 2026-04-26
 
 ## 原卷 PDF
 
-- [打开 PDF](./exams/2025-midterm-v3.pdf)
+- [打开 PDF](./2025-midterm-v3.pdf)
 - 原文件：`2025期中考试-v3-试题.pdf`
 - 规格：9 页，A4，约 319 KiB
