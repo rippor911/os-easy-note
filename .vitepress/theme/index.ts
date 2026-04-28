@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
 import CompareCard from '../../components/CompareCard.vue'
+import AdditionReviewPaper from '../../components/AdditionReviewPaper.vue'
 import ExamPaper from '../../components/ExamPaper.vue'
 import FillBlank from '../../components/FillBlank.vue'
 import Mermaid from '../../components/Mermaid.vue'
@@ -22,6 +23,7 @@ export default {
     app.component('MultiFillBlank', MultiFillBlank)
     app.component('Reveal', Reveal)
     app.component('CompareCard', CompareCard)
+    app.component('AdditionReviewPaper', AdditionReviewPaper)
     app.component('ExamPaper', ExamPaper)
     app.component('ProgressDashboard', ProgressDashboard)
     app.component('Mermaid', Mermaid)

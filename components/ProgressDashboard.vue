@@ -75,11 +75,18 @@ function findBankQuestion(record: QuestionRecord) {
 }
 
 function isSelectedOption(record: QuestionRecord, label: string) {
-  return record.selected === label
+  return splitLabels(record.selected).includes(label)
 }
 
 function isAnswerOption(record: QuestionRecord, label: string) {
-  return record.answer === label
+  return splitLabels(record.answer).includes(label)
+}
+
+function splitLabels(value: string) {
+  return value
+    .split(/[、,，\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
 }
 
 function displayValue(value: string) {
