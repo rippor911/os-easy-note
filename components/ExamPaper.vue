@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { recordQuestion } from './utils/progress'
+import ExamSupplements, { type SupplementBlock } from './ExamSupplements.vue'
 
 type ObjectiveType = 'true-false' | 'single' | 'blank'
 
@@ -31,6 +32,7 @@ interface BlankQuestion extends ObjectiveBase {
   type: 'blank'
   answers: string[]
   answerText: string
+  supplements?: SupplementBlock[]
 }
 
 type ObjectiveQuestion = TrueFalseQuestion | SingleChoiceQuestion | BlankQuestion
@@ -43,6 +45,7 @@ interface SubjectiveQuestion {
   details?: string[]
   answer: string[]
   rubric?: string[]
+  supplements?: SupplementBlock[]
 }
 
 const trueFalseQuestions: TrueFalseQuestion[] = [
@@ -291,6 +294,8 @@ const singleChoiceQuestions: SingleChoiceQuestion[] = [
   }
 ]
 
+const variableStorageSnippet = '#include <stdio.h>\nint a = 100;\nint b;\nint main() {\n    int x[100];\n    int y = 10;\n    int *p = &y, *q = &b;\n    printf("a=%d, b=%d, x=0x%lx, p=0x%lx, q=0x%lx\\n", a,\n        b, (unsigned long)x, (unsigned long)p, (unsigned long)q);\n}'
+
 const blankQuestions: BlankQuestion[] = [
   {
     id: 'blank-01-fifo',
@@ -359,6 +364,13 @@ const blankQuestions: BlankQuestion[] = [
     question: '程序中全局变量 int a = 100; 装载后通常在哪个段中分配存储空间？',
     answers: ['数据段', '.data', 'data', '已初始化数据段'],
     answerText: '数据段（.data）',
+    supplements: [
+      {
+        type: 'code',
+        language: 'c',
+        content: variableStorageSnippet
+      }
+    ],
     points: 2,
     explanation: '已初始化全局变量通常放在 .data。'
   },
@@ -369,6 +381,13 @@ const blankQuestions: BlankQuestion[] = [
     question: '函数内局部数组 int x[100]; 运行时通常在哪个段中分配存储空间？',
     answers: ['栈', '栈段', 'stack'],
     answerText: '栈段（stack）',
+    supplements: [
+      {
+        type: 'code',
+        language: 'c',
+        content: variableStorageSnippet
+      }
+    ],
     points: 2,
     explanation: '普通自动局部变量通常分配在线程栈上。'
   },
@@ -379,6 +398,12 @@ const blankQuestions: BlankQuestion[] = [
     question: '补全 Dekker 算法中 P0 放弃意向后等待 turn 改变的语句。',
     answers: ['while(turn==1)', 'while(turn==1);', 'while(turn!=0)', 'while(turn!=0);'],
     answerText: 'while (turn == 1);',
+    supplements: [
+      {
+        type: 'code',
+        content: '1   ...\n2   pturn = true;\n3   while (qturn) {\n4\n5       if (turn == 1) {\n6           pturn = false;\n7           ________\n8           pturn = true;\n9       }\n10  }\n11  访问临界区\n12\n13  pturn = false;\n14  ...'
+      }
+    ],
     points: 2,
     explanation: 'P0 暂时撤销 pturn 后，应等待 turn 不再偏向 P1，再重新声明进入意向。'
   },
@@ -389,6 +414,12 @@ const blankQuestions: BlankQuestion[] = [
     question: '补全 Dekker 算法中 P0 离开临界区时交出优先权的语句。',
     answers: ['turn=1', 'turn=1;'],
     answerText: 'turn = 1;',
+    supplements: [
+      {
+        type: 'code',
+        content: '1   ...\n2   pturn = true;\n3   while (qturn) {\n4\n5       if (turn == 1) {\n6           pturn = false;\n7           while (turn == 1);\n8           pturn = true;\n9       }\n10  }\n11  访问临界区\n12  ________\n13  pturn = false;\n14  ...'
+      }
+    ],
     points: 2,
     explanation: 'P0 退出临界区时把 turn 交给 P1，再撤销自己的进入意向。'
   }
@@ -435,6 +466,88 @@ const subjectiveQuestions: SubjectiveQuestion[] = [
       '检查段有效性和段内页号范围。',
       '检查 PTE 有效位和读写权限。',
       'Load 成功时用物理页号拼接偏移读取字节。'
+    ],
+    supplements: [
+      {
+        type: 'table',
+        caption: '虚拟地址格式',
+        headers: ['字段', '位数'],
+        rows: [
+          ['虚拟段号', '4'],
+          ['虚拟页号', '8'],
+          ['页内偏移', '8']
+        ]
+      },
+      {
+        type: 'table',
+        caption: '物理地址格式',
+        headers: ['字段', '位数'],
+        rows: [
+          ['物理页号', '8'],
+          ['页内偏移', '8']
+        ]
+      },
+      {
+        type: 'table',
+        caption: '指令结果填写表',
+        headers: ['指令', '结果'],
+        rows: [
+          ['Load [0x30111]', ''],
+          ['Store [0x30116]', ''],
+          ['Load [0x42020]', ''],
+          ['Load [0x00112]', ''],
+          ['Store [0x00210]', ''],
+          ['Load [0x21211]', ''],
+          ['Load [0x11135]', '']
+        ]
+      },
+      {
+        type: 'table',
+        caption: '段表',
+        headers: ['段号', '页表基地址', '段内最大页面数', '有效状态'],
+        rows: [
+          ['0', '0x2000', '0x20', 'Valid'],
+          ['1', '0x1000', '0x10', 'Valid'],
+          ['2', '0x3100', '0x40', 'Invalid'],
+          ['3', '0x4000', '0x20', 'Valid']
+        ]
+      },
+      {
+        type: 'table',
+        caption: '页表项（PTE）格式',
+        headers: ['第 1 字节', '第 2 字节'],
+        rows: [
+          ['物理页框号', '标志位'],
+          ['', '0x00 = Invalid'],
+          ['', '0x06 = Valid, Read Only'],
+          ['', '0x07 = Valid, Read/Write']
+        ]
+      },
+      {
+        type: 'table',
+        caption: '物理内存（节选）',
+        headers: ['Address', '+0', '+1', '+2', '+3', '+4', '+5', '+6', '+7', '+8', '+9', '+A', '+B', '+C', '+D', '+E', '+F'],
+        rows: [
+          ['0x0000', '0E', '0F', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '1A', '1B', '1C', '1D'],
+          ['0x0010', '1E', '1F', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '2A', '2B', '2C', '2D'],
+          ['0x1010', '40', '41', '20', '07', '44', '45', '46', '47', '48', '49', '4A', '4B', '4C', '4D', '4E', '4F'],
+          ['0x1020', '40', '07', '41', '06', '30', '06', '31', '07', '00', '07', '00', '00', '00', '00', '00', '00'],
+          ['0x1030', '51', '07', '4F', '07', '3F', '07', '31', '07', '01', '07', '00', '00', '00', '00', '00', '00'],
+          ['0x1040', '40', '07', '41', '07', '31', '07', '31', '07', '02', '07', '00', '00', '00', '00', '00', '00'],
+          ['0x2000', '02', '20', '10', '00', '10', '07', '05', '50', '06', '60', '07', '70', '08', '80', '09', '90'],
+          ['0x2010', '0A', 'A0', '0B', 'B0', '0C', 'C0', '0D', 'D0', '0E', 'E0', '0F', 'F0', '10', '01', '11', '11'],
+          ['0x2020', '12', '21', '13', '31', '14', '41', '15', '51', '16', '61', '17', '71', '18', '81', '19', '91'],
+          ['0x2030', '10', '06', '11', '00', '12', '07', '40', '07', '41', '07', '00', '00', '00', '00', '00', '00'],
+          ['0x30F0', '00', '11', '22', '33', '44', '55', '66', '77', '88', '99', 'AA', 'BB', 'CC', 'DD', 'EE', 'FF'],
+          ['0x3100', '01', '12', '23', '34', '45', '56', '67', '78', '89', '9A', 'AB', 'BC', 'CD', 'DE', 'EF', '00'],
+          ['0x3110', '02', '13', '24', '35', '20', '07', '68', '79', '8A', '9B', 'AC', 'BD', 'CE', 'DF', 'F0', '01'],
+          ['0x3120', '03', '06', '25', '36', '47', '58', '69', '7A', '8B', '9C', 'AD', 'BE', 'CF', 'E0', 'F1', '02'],
+          ['0x3130', '04', '15', '26', '37', '48', '59', '70', '7B', '8C', '9D', 'AE', 'BF', 'D0', 'E1', 'F2', '03'],
+          ['0x4000', '30', '00', '31', '06', '20', '07', '33', '07', '34', '06', '35', '00', '43', '38', '32', '79'],
+          ['0x4010', '50', '28', '84', '19', '71', '69', '39', '93', '75', '10', '58', '20', '97', '49', '44', '59'],
+          ['0x4020', '23', '07', '20', '07', '00', '06', '62', '08', '99', '86', '28', '03', '48', '25', '34', '21']
+        ]
+      }
     ]
   },
   {
@@ -759,6 +872,7 @@ function resetPaper() {
       <article v-for="(question, index) in blankQuestions" :key="question.id" class="exam-question">
         <label class="exam-blank">
           <span>{{ index + 1 }}. {{ question.question }}</span>
+          <ExamSupplements :blocks="question.supplements" />
           <input
             v-model="blankAnswers[question.id]"
             :disabled="submitted"
@@ -788,6 +902,7 @@ function resetPaper() {
         </header>
         <p class="exam-subjective__prompt">{{ question.prompt }}</p>
         <pre v-for="detail in question.details" :key="detail" class="exam-subjective__detail">{{ detail }}</pre>
+        <ExamSupplements :blocks="question.supplements" />
         <textarea
           v-model="subjectiveAnswers[question.id]"
           :disabled="submitted"

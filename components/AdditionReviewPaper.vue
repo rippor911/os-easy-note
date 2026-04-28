@@ -15,8 +15,6 @@ interface BaseQuestion {
   title: string
   question: string
   explanation: string
-  sourceAnswer: string
-  answerNote?: string
 }
 
 interface SingleQuestion extends BaseQuestion {
@@ -52,7 +50,6 @@ const questions: ReviewQuestion[] = [
       { label: 'D', text: '使用二级页表平均访存性能优于一级页表。' }
     ],
     answer: 'D',
-    sourceAnswer: 'A',
     explanation: '多级页表的主要收益是按需分配下级页表，从而节省页表空间；但页表级数越多，TLB 未命中时的页表遍历通常更长，因此不能说二级页表平均访存性能优于一级页表。'
   },
   {
@@ -67,7 +64,6 @@ const questions: ReviewQuestion[] = [
       { label: 'D', text: '页表' }
     ],
     answer: ['A', 'B'],
-    sourceAnswer: 'A',
     explanation: '段式地址到线性地址的转换要用段选择子在 GDT 或 LDT 中找到段描述符。页目录和页表属于线性地址到物理地址的分页阶段，不属于本题这一问。'
   },
   {
@@ -82,7 +78,6 @@ const questions: ReviewQuestion[] = [
       { label: 'D', text: '页面内容可能位于磁盘上。' }
     ],
     answer: ['A', 'C', 'D'],
-    sourceAnswer: 'A、C',
     explanation: '在请求式分页语境下，`Valid = 0` 表示当前页表项无效，访问它会触发缺页异常；页面尚未分配物理页框，或者内容暂时在磁盘上，都是合理解释。'
   },
   {
@@ -97,7 +92,6 @@ const questions: ReviewQuestion[] = [
       { label: 'D', text: '可重入代码可被多个执行流安全共享。' }
     ],
     answer: ['A', 'B', 'C', 'D'],
-    sourceAnswer: 'B、C、D',
     explanation: 'A 也正确。即使只有一个用户进程，也可能因为中断、异常、信号处理或递归再次进入同一段代码。可重入代码的关键是不要依赖未受保护的可修改共享状态。'
   },
   {
@@ -107,73 +101,60 @@ const questions: ReviewQuestion[] = [
     question: '引用串 `0,1,7,2,3,2,7,1,0,3`，4 个页框，Clock 算法产生多少次缺页？',
     answers: ['6'],
     placeholder: '输入数字',
-    sourceAnswer: '7',
     explanation: '按这套题库的默认规则，新装入页的访问位设为 1。按照 Clock 的扫描和二次机会逻辑模拟，最终缺页次数是 6 次。'
   },
   {
     id: 'addition-06',
     type: 'blank',
     title: '按需调页平均延迟因素',
-    question: '按原题选项字母作答：影响按需调页平均延迟的正确选项是哪些？',
+    question: '影响按需调页平均延迟的正确选项是哪些？',
     answers: ['ABCD', 'A,B,C,D', 'A、B、C、D'],
     placeholder: '例如 A、B、C、D',
-    sourceAnswer: 'A、B、D',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母集合回忆作答。',
-    explanation: '你当时漏掉了 C。题目确认的最终答案是 A、B、C、D，其中 C 对应“进程切换开销”，它也是影响按需调页平均延迟的因素。'
+    explanation: '题目确认的最终答案是 A、B、C、D，其中 C 对应“进程切换开销”，它也是影响按需调页平均延迟的因素。'
   },
   {
     id: 'addition-07',
     type: 'blank',
     title: '虚拟内存说法',
-    question: '按原题选项字母作答：关于虚拟内存说法正确的是哪些？',
+    question: '关于虚拟内存说法正确的是哪些？',
     answers: ['ABCD', 'A,B,C,D', 'A、B、C、D'],
     placeholder: '例如 A、B、C、D',
-    sourceAnswer: 'B、C、D',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母集合回忆作答。',
     explanation: '本题最终答案是 A、B、C、D。易错点在 A：在这套题库的教学语境里，“页表需要占用虚拟地址空间”判为正确。'
   },
   {
     id: 'addition-08',
     type: 'blank',
     title: '4MB 对齐',
-    question: '按原题选项字母作答：以下哪个地址不是 4MB 对齐的？',
+    question: '以下哪个地址不是 4MB 对齐的？',
     answers: ['C'],
     placeholder: '输入选项字母',
-    sourceAnswer: 'C',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母回忆作答。',
-    explanation: '你原本作答 C 是对的。中途曾误判为 D，但最后已经修正，正确答案仍然是 C。'
+    explanation: '正确答案是 C。'
   },
   {
     id: 'addition-09',
     type: 'blank',
     title: '自映射地址类型',
-    question: '按原题选项字母作答：页目录自映射计算过程中，正确的地址类型对应哪一项？',
+    question: '页目录自映射计算过程中，正确的地址类型对应哪一项？',
     answers: ['B'],
     placeholder: '输入选项字母',
-    sourceAnswer: 'B',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母回忆作答。',
-    explanation: '这题最终正确答案是 B。之前曾误判过 C，后来已经修正。'
+    explanation: '本题最终正确答案是 B。'
   },
   {
     id: 'addition-10',
     type: 'blank',
     title: 'fork()',
-    question: '按原题选项字母作答：关于 `fork()`，下列说法不正确的是哪一项？',
+    question: '关于 `fork()`，下列说法不正确的是哪一项？',
     answers: ['D'],
     placeholder: '输入选项字母',
-    sourceAnswer: 'B',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母回忆作答。',
-    explanation: '牢记 `pid = fork();` 后，子进程得到返回值 0，父进程得到子进程 PID。因此本题不正确的是 D，而不是 B。'
+    explanation: '牢记 `pid = fork();` 后，子进程得到返回值 0，父进程得到子进程 PID。因此本题不正确的是 D。'
   },
   {
     id: 'addition-11',
     type: 'blank',
     title: 'PCB',
-    question: '按原题选项字母作答：PCB 中记录的信息包括哪些？',
+    question: 'PCB 中记录的信息包括哪些？',
     answers: ['BCDEF', 'B,C,D,E,F', 'B C D E F', 'B、C、D、E、F'],
     placeholder: '例如 B、C、D、E、F',
-    sourceAnswer: 'B、C、D、E、F、G、H',
-    answerNote: '原始选项未完整保留，本题按老师原题的字母集合回忆作答。',
     explanation: '最终正确答案是 B、C、D、E、F。G“代码段长度”和 H“符号表”不属于 PCB 必备记录项。PCB 主要保存进程标识、状态、调度信息、寄存器现场、内存和文件等运行管理信息。'
   },
   {
@@ -186,7 +167,6 @@ const questions: ReviewQuestion[] = [
       { label: 'B', text: '非抢占式调度' }
     ],
     answer: 'A',
-    sourceAnswer: 'B',
     explanation: 'Peterson 算法面向两个并发执行的进程，通过共享变量和忙等待实现互斥。它默认进程在竞争期间可能被随时切换，因此更典型地适用于抢占式调度环境；在非抢占式调度下，互斥问题本身会被弱化。'
   },
   {
@@ -201,7 +181,6 @@ const questions: ReviewQuestion[] = [
       { label: 'D', text: '同一时刻，只有一个进程可以在管程内执行。' }
     ],
     answer: 'B',
-    sourceAnswer: 'A',
     explanation: 'A、C、D 都成立。错误在 B：管程不是比信号量“能力更强”，而是把同步机制封装得更安全、更易写。理论上信号量可以实现管程功能，所以不能说管程能解决而信号量不能解决的问题。'
   },
   {
@@ -215,7 +194,6 @@ const questions: ReviewQuestion[] = [
       { label: 'C', text: '`SP(S,1,0)` 在 `S = 0` 时禁止任何进程进入临界区。' }
     ],
     answer: ['A', 'B'],
-    sourceAnswer: 'B、C',
     explanation: '`SP(S,d,e)` 的准确条件是 `S ≥ d` 且 `S - d ≥ e`，所以 A 错在只看了 `e` 而忽略了申请量 `d`。`SP(S,0,1)` 申请 0 个资源，没有互斥意义，因此 B 也错。C 是对的，因为 `SP(S,1,0)` 在 `S = 0` 时确实无法分配资源。'
   }
 ]
@@ -304,9 +282,8 @@ function resetAll() {
   <section class="addition-paper">
     <header class="addition-paper__hero">
       <div>
-        <p class="addition-paper__eyebrow">Comprehensive Review</p>
         <h2>补充综合测试</h2>
-        <p>共 11 题，按题提交即可看到答案与解析。部分题目原始选项未完整保留，页面里已明确标注为“按原题字母回忆作答”。</p>
+        <p>共 14 题，按题提交即可看到答案与解析。</p>
       </div>
       <div class="addition-paper__meta">
         <strong>{{ answeredCount }} / {{ questions.length }}</strong>
@@ -321,12 +298,10 @@ function resetAll() {
           <h3>{{ question.title }}</h3>
         </div>
         <span class="addition-question__type">
-          {{ question.type === 'single' ? '单选' : question.type === 'multiple' ? '多选' : '填空/字母作答' }}
+          {{ question.type === 'single' ? '单选' : question.type === 'multiple' ? '多选' : '填空' }}
         </span>
       </header>
-
       <p class="addition-question__stem">{{ question.question }}</p>
-      <p v-if="question.answerNote" class="addition-question__note">{{ question.answerNote }}</p>
 
       <div v-if="question.type === 'single'" class="addition-options">
         <button
@@ -375,7 +350,6 @@ function resetAll() {
       </label>
 
       <div class="addition-question__actions">
-        <span>你当时的答案：{{ question.sourceAnswer }}</span>
         <button type="button" :disabled="!hasAnswered(question) || submitted[question.id]" @click="submitQuestion(question)">
           提交本题
         </button>
