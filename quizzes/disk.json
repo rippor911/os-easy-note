@@ -1,0 +1,152 @@
+[
+  {
+    "id": "disk-structure-01",
+    "title": "磁盘基本结构",
+    "question": "关于磁盘的扇区（sector）、磁道（track）和柱面（cylinder），下列说法最准确的是？",
+    "options": [
+      { "label": "A", "text": "柱面是所有盘片上相同半径磁道的集合，逻辑块（扇区）是最小传输单位" },
+      { "label": "B", "text": "磁道是扇区的子集" },
+      { "label": "C", "text": "柱面和扇区是同一概念的不同名称" },
+      { "label": "D", "text": "每个磁盘只有一个磁头" }
+    ],
+    "answer": "A",
+    "explanation": "盘片以中心为圆心形成同心圆磁道，磁道被等分为扇区（逻辑块，最小传输单位）。不同盘片相同半径的磁道组成柱面。每个可用盘面对应一个磁头。",
+    "tags": ["disk", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "disk-chs-lba-01",
+    "title": "CHS 到 LBA 转换",
+    "question": "已知磁盘参数：柱面号 C、磁头号 H、扇区号 S，每个磁道的扇区数 NS，磁头数 NH。LBA 地址的计算公式是什么？",
+    "options": [
+      { "label": "A", "text": "LBA = (C × NH × NS) + (H × NS) + (S - 1)" },
+      { "label": "B", "text": "LBA = C + H + S" },
+      { "label": "C", "text": "LBA = (C × NH) + (H × NS) + S" },
+      { "label": "D", "text": "LBA = C × NS + H × NH + S" }
+    ],
+    "answer": "A",
+    "explanation": "CHS 可看作一个三维数组：先遍历同一柱面下不同磁头的同一位置扇区，再遍历同一柱面下不同扇区，最后切换柱面。因此 LBA = C×(NH×NS) + H×NS + (S-1)。",
+    "tags": ["disk", "calculation", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "disk-access-time-01",
+    "title": "磁盘访问时间",
+    "question": "磁盘访问时间由哪些组成部分构成？",
+    "options": [
+      { "label": "A", "text": "寻道时间 + 旋转延迟时间 + 传输时间" },
+      { "label": "B", "text": "只是寻道时间" },
+      { "label": "C", "text": "只是旋转延迟时间" },
+      { "label": "D", "text": "寻道时间 + 排队等待时间" }
+    ],
+    "answer": "A",
+    "explanation": "磁盘访问时间 = 寻道时间（磁头移动到磁道）+ 旋转延迟（旋转到目标扇区）+ 传输时间（数据读写）。排队等待时间属于磁盘延迟（Response Time），但不属于磁盘访问时间。",
+    "tags": ["disk", "performance", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "disk-schedule-scan-01",
+    "title": "SCAN 与 C-SCAN",
+    "question": "C-SCAN（循环扫描）算法相比 SCAN 算法的主要改进是什么？",
+    "options": [
+      { "label": "A", "text": "磁头只按一个方向提供服务，到达最后一个请求后快速返回起始端，消除了两端磁道的不公平" },
+      { "label": "B", "text": "C-SCAN 总是选择最近的请求先服务" },
+      { "label": "C", "text": "C-SCAN 完全消除了磁头移动" },
+      { "label": "D", "text": "C-SCAN 比 FCFS 更简单" }
+    ],
+    "answer": "A",
+    "explanation": "SCAN 算法双向移动时两端磁道的访问频率低于中间磁道。C-SCAN 只按一个方向服务，到达最后一个请求后快速返回起始端（忽略返回过程），使得各磁道等待时间更均匀。",
+    "tags": ["disk", "scheduling", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "disk-schedule-sticky-01",
+    "title": "磁臂黏着现象",
+    "question": ""磁臂黏着现象"是指什么？如何缓解？",
+    "options": [
+      { "label": "A", "text": "某磁道访问频率过高，垄断磁盘设备；N-Step-SCAN 和 FSCAN 可以缓解" },
+      { "label": "B", "text": "磁头物理损坏无法移动" },
+      { "label": "C", "text": "磁盘转速不稳定" },
+      { "label": "D", "text": "使用 SSTF 算法可以完全避免" }
+    ],
+    "answer": "A",
+    "explanation": "磁臂黏着是指某磁道持续收到大量请求，磁头被"黏"在该磁道附近，导致其他磁道的请求长期得不到服务。N-Step-SCAN（队列间 FCFS，队列内 SCAN）和 FSCAN（2-Step-SCAN）通过划分请求批次来缓解。",
+    "tags": ["disk", "scheduling", "tricky"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "disk-raid-01",
+    "title": "RAID 级别对比",
+    "question": "关于 RAID 0、RAID 1 和 RAID 5，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "RAID 0 通过条带化提高性能但无冗余；RAID 1 通过镜像提供冗余但成本最高；RAID 5 使用分布式奇偶校验，可容忍 1 块磁盘故障" },
+      { "label": "B", "text": "RAID 0 能容忍 1 块磁盘故障" },
+      { "label": "C", "text": "RAID 5 的冗余方式与 RAID 1 完全相同" },
+      { "label": "D", "text": "RAID 1 的空间利用率比 RAID 0 更高" }
+    ],
+    "answer": "A",
+    "explanation": "RAID 0 纯条带化无冗余；RAID 1 镜像存储，空间利用率仅 50% 但安全性高；RAID 5 分布式奇偶校验，至少需 3 块磁盘，可容忍 1 块磁盘故障，在冗余和成本间折中。",
+    "tags": ["disk", "raid", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "disk-raid-01-10-01",
+    "title": "RAID 0+1 与 RAID 1+0",
+    "question": "RAID 0+1 和 RAID 1+0 的区别是什么？",
+    "options": [
+      { "label": "A", "text": "RAID 0+1 先条带化后镜像，RAID 1+0 先镜像后条带化，RAID 1+0 通常具有更好的故障容忍能力" },
+      { "label": "B", "text": "两者完全相同，只是名称不同" },
+      { "label": "C", "text": "RAID 0+1 完全不需要镜像" },
+      { "label": "D", "text": "RAID 1+0 不能容忍任何磁盘故障" }
+    ],
+    "answer": "A",
+    "explanation": "RAID 0+1：先条带化（RAID 0），再对整个条带组做镜像（RAID 1）。RAID 1+0：先组成镜像对（RAID 1），再对镜像对做条带化（RAID 0）。RAID 1+0 在某个镜像对的一块磁盘故障时，只需要恢复该镜像对的数据。",
+    "tags": ["disk", "raid", "tricky"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "disk-space-mgmt-01",
+    "title": "磁盘空闲空间管理",
+    "question": "关于位图、空闲表和成组链接法三种磁盘空闲空间管理方式，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "成组链接法将多个空闲块号放在一组，组内用栈/数组管理，组间用链接串联，登记不占用额外空间" },
+      { "label": "B", "text": "位图法需要为每个空闲块建立一个链表节点" },
+      { "label": "C", "text": "空闲表法用二进制位表示每个盘块的使用情况" },
+      { "label": "D", "text": "三种方法完全等价，没有区别" }
+    ],
+    "answer": "A",
+    "explanation": "位图法使用二进制位表示盘块状态；空闲表法用顺序表记录空闲块区（起始块号+块数）；成组链接法在每组内用数组/栈存储空闲块号，组间用链接串联，且空闲块号登记在空闲块自身中，不占额外空间。",
+    "tags": ["disk", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "disk-cache-01",
+    "title": "磁盘高速缓存",
+    "question": "以下哪种方式不属于提高磁盘 I/O 速度的方法？",
+    "options": [
+      { "label": "A", "text": "提前读（Read-Ahead）和延迟写（Delayed Write）" },
+      { "label": "B", "text": "设置磁盘高速缓存" },
+      { "label": "C", "text": "优化数据布局使相关数据靠近" },
+      { "label": "D", "text": "增加磁盘转速但不改变调度算法" }
+    ],
+    "answer": "D",
+    "explanation": "笔记中列出的提高 I/O 速度途径包括：选择性能好的磁盘、并行化、采用适当调度算法、设置磁盘高速缓存（含提前读/延迟写）、优化数据布局、虚拟盘（RAM 盘）。只增加转速但不结合调度和缓存等软件手段，效果有限。",
+    "tags": ["disk", "performance", "tricky"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "disk-flash-01",
+    "title": "Flash 盘特点",
+    "question": "Flash 盘与传统 HDD 的关键区别是什么？",
+    "options": [
+      { "label": "A", "text": "Flash 盘无机械结构，写入前需要擦除，且有擦写寿命限制" },
+      { "label": "B", "text": "Flash 盘的寻道时间比 HDD 长" },
+      { "label": "C", "text": "Flash 盘遵循 CHS 编址模式" },
+      { "label": "D", "text": "Flash 盘不需要磨损均衡" }
+    ],
+    "answer": "A",
+    "explanation": "Flash 盘（SSD）无机械寻道和旋转延迟；但写入前需先擦除，有擦写寿命限制，因此需要磨损均衡（wear leveling）技术来延长整体寿命。",
+    "tags": ["disk", "flash", "exam"],
+    "difficulty": "easy"
+  }
+]

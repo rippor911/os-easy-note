@@ -10,42 +10,79 @@
       "text": "OS Boot",
       "pages": [
         "main.md",
-        { "file": "1_0 \u5f15\u8a00.md", "text": "\u5f15\u8a00" },
+        { "file": "1_0 引言.md", "text": "引言" },
         { "file": "2_0 Boot.md", "text": "Boot" },
-        { "file": "3_0 \u7a0b\u5e8f\u8fd0\u884c\u57fa\u672c\u8fc7\u7a0b.md", "text": "\u7a0b\u5e8f\u8fd0\u884c\u57fa\u672c\u8fc7\u7a0b" }
+        { "file": "3_0 程序运行基本过程.md", "text": "程序运行基本过程" }
       ]
     },
     {
-      "dir": "\u5185\u5b58\u7ba1\u7406",
-      "text": "\u5185\u5b58\u7ba1\u7406",
+      "dir": "内存管理",
+      "text": "内存管理",
       "pages": [
         "main.md",
-        { "file": "3_1\u5b58\u50a8\u7ba1\u7406.md", "text": "\u5b58\u50a8\u7ba1\u7406" },
-        { "file": "3_2 \u9875\u5f0f\u7ba1\u7406\u57fa\u7840.md", "text": "\u9875\u5f0f\u7ba1\u7406\u57fa\u7840" },
-        { "file": "3_3 \u6bb5\u5f0f\u7ba1\u7406.md", "text": "\u6bb5\u5f0f\u7ba1\u7406" },
-        { "file": "3_4 \u865a\u62df\u5185\u5b58\u7ba1\u7406.md", "text": "\u865a\u62df\u5185\u5b58\u7ba1\u7406" },
-        { "file": "3_5 \u8bf7\u6c42\u5f0f\u5206\u9875\u7cfb\u7edf.md", "text": "\u8bf7\u6c42\u5f0f\u5206\u9875\u7cfb\u7edf" },
-        { "file": "3_6 \u9875\u8868\u81ea\u6620\u5c04.md", "text": "\u9875\u8868\u81ea\u6620\u5c04" }
+        { "file": "3_1存储管理.md", "text": "存储管理" },
+        { "file": "3_2 页式管理基础.md", "text": "页式管理基础" },
+        { "file": "3_3 段式管理.md", "text": "段式管理" },
+        { "file": "3_4 虚拟内存管理.md", "text": "虚拟内存管理" },
+        { "file": "3_5 请求式分页系统.md", "text": "请求式分页系统" },
+        { "file": "3_6 页表自映射.md", "text": "页表自映射" }
       ]
     },
     {
-      "dir": "\u8fdb\u7a0b\u4e0e\u7ebf\u7a0b",
-      "text": "\u8fdb\u7a0b\u4e0e\u7ebf\u7a0b",
+      "dir": "进程与线程",
+      "text": "进程与线程",
       "pages": [
         "main.md",
-        { "file": "4_1 \u8fdb\u7a0b\u72b6\u6001\u4e0e\u63a7\u5236.md", "text": "\u8fdb\u7a0b\u72b6\u6001\u4e0e\u63a7\u5236" },
-        { "file": "4_2 \u7ebf\u7a0b.md", "text": "\u7ebf\u7a0b" },
-        { "file": "4_3 \u540c\u6b65\u4e0e\u4e92\u65a5.md", "text": "\u540c\u6b65\u4e0e\u4e92\u65a5" }
+        { "file": "4_1 进程状态与控制.md", "text": "进程状态与控制" },
+        { "file": "4_2 线程.md", "text": "线程" },
+        { "file": "4_3 同步与互斥.md", "text": "同步与互斥" },
+        { "file": "4_4 同步互斥典例.md", "text": "同步互斥典例" },
+        { "file": "4_5 进程间通信.md", "text": "进程间通信" },
+        { "file": "4_6 调度.md", "text": "调度" },
+        { "file": "4_7 死锁.md", "text": "死锁" }
+      ]
+    },
+    {
+      "dir": "IO管理",
+      "text": "I/O 管理",
+      "pages": [
+        { "file": "5_1 设备管理概要.md", "text": "设备管理概要" },
+        { "file": "5_2 IO软硬件组成.md", "text": "I/O 软硬件组成" },
+        { "file": "5_3 IO控制方式.md", "text": "I/O 控制方式" },
+        { "file": "5_4 IO缓冲管理.md", "text": "I/O 缓冲管理" },
+        { "file": "5_5 IO设备管理与性能问题.md", "text": "I/O 设备管理与性能问题" }
+      ]
+    },
+    {
+      "dir": "硬盘管理",
+      "text": "硬盘管理",
+      "pages": [
+        "main.md",
+        { "file": "6_1 磁盘概述.md", "text": "磁盘概述" },
+        { "file": "6_2 磁盘的组织与调度.md", "text": "磁盘的组织与调度" },
+        { "file": "6_3 RAID.md", "text": "RAID" },
+        { "file": "6_4 磁盘管理实例.md", "text": "磁盘管理实例" }
+      ]
+    },
+    {
+      "dir": "文件系统",
+      "text": "文件系统",
+      "pages": [
+        "main.md",
+        { "file": "7_1 文件系统基本概念.md", "text": "文件系统基本概念" },
+        { "file": "7_2 文件系统实现方式.md", "text": "文件系统实现方式" },
+        { "file": "7_3 文件系统实例分析.md", "text": "文件系统实例分析" }
       ]
     },
     {
       "dir": "exams",
-      "text": "\u8003\u8bd5\u4e0e\u7efc\u5408\u6d4b\u8bd5",
+      "text": "考试与综合测试",
       "pages": [
         "index.md",
-        { "file": "2024-midterm.md", "text": "2024 \u671f\u4e2d" },
-        { "file": "2025-midterm.md", "text": "2025 \u671f\u4e2d" },
-        { "file": "addition-review.md", "text": "\u7efc\u5408\u8865\u5145\u6d4b\u8bd5" }
+        { "file": "2024-midterm.md", "text": "2024 期中" },
+        { "file": "2025-midterm.md", "text": "2025 期中" },
+        { "file": "2025-final.md", "text": "2025 期末" },
+        { "file": "addition-review.md", "text": "综合补充测试" }
       ]
     }
   ]

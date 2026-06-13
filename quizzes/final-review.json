@@ -1,0 +1,302 @@
+[
+  {
+    "id": "fr-01",
+    "title": "多道程序设计的动机",
+    "question": "多道程序设计技术被提出的主要目的是什么？",
+    "options": [
+      { "label": "A", "text": "提高内存利用率" },
+      { "label": "B", "text": "提高 CPU 利用率" },
+      { "label": "C", "text": "提高磁盘 I/O 速度" },
+      { "label": "D", "text": "提高用户交互体验" }
+    ],
+    "answer": "B",
+    "explanation": "早期单用户批处理系统中 CPU 经常因等待 I/O 而空闲。多道程序设计允许多个作业同时驻留内存，当一道作业等待 I/O 时，CPU 可切换到另一道作业继续执行，从而显著提高 CPU 利用率。",
+    "tags": ["process", "history", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-02",
+    "title": "宏内核与微内核",
+    "question": "关于宏内核（Monolithic Kernel）和微内核（Microkernel），以下说法正确的是？",
+    "options": [
+      { "label": "A", "text": "微内核比宏内核占用空间更大" },
+      { "label": "B", "text": "宏内核的功能模块之间共享地址空间" },
+      { "label": "C", "text": "微内核的功能比宏内核更强大" },
+      { "label": "D", "text": "微内核的上下文切换开销比宏内核更小" }
+    ],
+    "answer": "B",
+    "explanation": "宏内核的所有内核模块运行在同一个地址空间中，模块间通过函数调用直接通信，上下文切换开销小。微内核将大部分服务移到用户态，内核本身占用空间小，但模块间需要通过 IPC 通信，开销较大。",
+    "tags": ["kernel", "design", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-03",
+    "title": "exec() 与进程标识",
+    "question": "关于 exec() 系统调用，以下说法正确的是？",
+    "options": [
+      { "label": "A", "text": "exec() 会修改进程的 PID" },
+      { "label": "B", "text": "exec() 会替换进程的地址空间但不改变 PID" },
+      { "label": "C", "text": "exec() 创建新的子进程" },
+      { "label": "D", "text": "exec() 会复制父进程的地址空间" }
+    ],
+    "answer": "B",
+    "explanation": "exec() 用新程序替换当前进程的地址空间（代码段、数据段、堆栈等），但进程的 PID 保持不变。进程仍然是同一个，只是执行的程序变了。fork() 才创建新进程。",
+    "tags": ["process", "kernel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-04",
+    "title": "第二次机会算法",
+    "question": "在第二次机会（Second Chance）页面置换算法中，当扫描到一个页面时，如果其引用位为 1，则算法会做什么？",
+    "options": [
+      { "label": "A", "text": "立即淘汰该页面" },
+      { "label": "B", "text": "将该页面的引用位清零并移到队列尾部" },
+      { "label": "C", "text": "将该页面保留并继续扫描下一个" },
+      { "label": "D", "text": "将该页面写回磁盘后淘汰" }
+    ],
+    "answer": "B",
+    "explanation": "第二次机会算法是 FIFO 的改进：检查队首页面的引用位。若引用位为 1，说明最近被访问过，将其清零并移到队尾（给予第二次机会）；若引用位为 0，才将其淘汰。",
+    "tags": ["virtual-memory", "page-replacement", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-05",
+    "title": "反置页表的结构",
+    "question": "关于反置页表（Inverted Page Table），以下说法正确的是？",
+    "options": [
+      { "label": "A", "text": "为每个进程的每个虚拟页保留一个条目" },
+      { "label": "B", "text": "为每个物理页框保留一个条目" },
+      { "label": "C", "text": "查找速度比普通页表快" },
+      { "label": "D", "text": "便于进程之间共享内存" }
+    ],
+    "answer": "B",
+    "explanation": "反置页表以物理页框为索引，每个条目记录该页框被哪个进程的哪个虚拟页占用。它的优点是页表大小与虚拟地址空间无关（只与物理内存有关），缺点是查找需要遍历或使用哈希表。",
+    "tags": ["paging", "inverted-page-table", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-06",
+    "title": "硬链接与软链接",
+    "question": "在 Unix/Linux 文件系统中，关于硬链接和软链接，以下说法错误的是？",
+    "options": [
+      { "label": "A", "text": "硬链接共享相同的 inode 号" },
+      { "label": "B", "text": "删除源文件后软链接会失效" },
+      { "label": "C", "text": "硬链接可以跨文件系统创建" },
+      { "label": "D", "text": "软链接本身是一个独立的文件" }
+    ],
+    "answer": "C",
+    "explanation": "硬链接不能跨文件系统，因为 inode 号只在同一个文件系统内唯一。软链接（符号链接）可以跨文件系统，因为它存储的是目标路径字符串。A/B/D 均正确。",
+    "tags": ["filesystem", "link", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-07",
+    "title": "文件系统挂载过程",
+    "question": "文件系统挂载（mount）时，内核首先将什么信息加载到内存中？",
+    "options": [
+      { "label": "A", "text": "文件的 inode 表" },
+      { "label": "B", "text": "根目录的目录项" },
+      { "label": "C", "text": "文件系统的超级块" },
+      { "label": "D", "text": "空闲块位图" }
+    ],
+    "answer": "C",
+    "explanation": "挂载操作的第一步是将文件系统的超级块（superblock）读入内存。超级块包含文件系统的元信息（魔数、块大小、inode 总数、空闲块数等），是访问文件系统的基础。",
+    "tags": ["filesystem", "mount", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-08",
+    "title": "内核级线程的阻塞行为",
+    "question": "一个多线程进程中，某个内核级线程在执行系统调用时被阻塞，会发生什么？",
+    "options": [
+      { "label": "A", "text": "同一进程的所有线程都被阻塞" },
+      { "label": "B", "text": "只阻塞该线程本身，其他线程可以继续运行" },
+      { "label": "C", "text": "整个进程被终止" },
+      { "label": "D", "text": "被阻塞的线程立即被调度到另一个 CPU" }
+    ],
+    "answer": "B",
+    "explanation": "内核级线程由内核独立调度，每个线程有独立的 TCB。一个内核级线程的阻塞不会影响同一进程中的其他内核级线程——内核可以调度其他就绪线程运行。这是内核级线程相比用户级线程的重要优势。",
+    "tags": ["process", "thread", "kernel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-09",
+    "title": "系统调用与中断",
+    "question": "系统调用陷入（trap）与外部中断的区别在于？",
+    "options": [
+      { "label": "A", "text": "系统调用是异步的，外部中断是同步的" },
+      { "label": "B", "text": "系统调用是同步的（由程序主动触发），外部中断是异步的" },
+      { "label": "C", "text": "两者的处理流程完全相同" },
+      { "label": "D", "text": "系统调用不由操作系统处理" }
+    ],
+    "answer": "B",
+    "explanation": "系统调用陷入是同步事件——由正在执行的程序通过 int/syscall 指令主动触发。外部中断是异步事件——由硬件设备在任意时刻产生。两者的触发方式不同，但都是进入内核态的入口。",
+    "tags": ["kernel", "interrupt", "syscall", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-10",
+    "title": "中级调度的作用",
+    "question": "中级调度（Medium-term Scheduler）的主要功能是什么？",
+    "options": [
+      { "label": "A", "text": "从就绪队列中选择进程分配 CPU" },
+      { "label": "B", "text": "将作业从外存调入内存" },
+      { "label": "C", "text": "将进程从主存换出到外存或从外存换入到主存" },
+      { "label": "D", "text": "创建新的进程" }
+    ],
+    "answer": "C",
+    "explanation": "中级调度负责进程的挂起（换出）和激活（换入），通过 swapping 调节内存压力。当内存不足时将阻塞进程换出到磁盘，内存充裕时再换入，从而优化内存使用和系统性能。",
+    "tags": ["process", "scheduling", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-11",
+    "title": "运行态到就绪态",
+    "question": "在操作系统中，进程从运行态转换到就绪态的典型原因是什么？",
+    "options": [
+      { "label": "A", "text": "进程等待 I/O 操作完成" },
+      { "label": "B", "text": "进程的时间片用完" },
+      { "label": "C", "text": "进程调用了 sleep()" },
+      { "label": "D", "text": "进程等待信号量" }
+    ],
+    "answer": "B",
+    "explanation": "运行→就绪：时间片用完或被更高优先级进程抢占，进程回到就绪队列等待下一次调度。运行→阻塞：进程主动等待某事件（如 I/O、信号量）。",
+    "tags": ["process", "state", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-12",
+    "title": "位示图空间开销",
+    "question": "某磁盘共 2^30 个盘块，采用位示图法管理空闲块，每个盘块用 1 bit 表示。位示图需要占用多少 MB 存储空间？",
+    "options": [
+      { "label": "A", "text": "64 MB" },
+      { "label": "B", "text": "128 MB" },
+      { "label": "C", "text": "256 MB" },
+      { "label": "D", "text": "32 MB" }
+    ],
+    "answer": "B",
+    "explanation": "2^30 bits = 2^27 Bytes = 2^27 / 2^20 MB = 2^7 = 128 MB。计算过程：总位数 / 8 = 字节数，再除以 1024×1024 转换为 MB。",
+    "tags": ["disk", "bitmap", "calculation", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-13",
+    "title": "BSS 段与 DATA 段",
+    "question": "C 语言程序中，未初始化的全局变量在运行时存放在哪个段？",
+    "options": [
+      { "label": "A", "text": ".text 段" },
+      { "label": "B", "text": ".data 段" },
+      { "label": "C", "text": ".bss 段" },
+      { "label": "D", "text": "栈段" }
+    ],
+    "answer": "C",
+    "explanation": ".bss 段（Block Started by Symbol）存放未初始化的全局变量和静态变量。程序加载时 OS 将其初始化为 0，不占用可执行文件空间。已初始化的全局变量在 .data 段。",
+    "tags": ["process", "memory-layout", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-14",
+    "title": "实时系统的核心特征",
+    "question": "实时操作系统（RTOS）与普通分时操作系统最本质的区别是什么？",
+    "options": [
+      { "label": "A", "text": "RTOS 的 CPU 速度更快" },
+      { "label": "B", "text": "RTOS 必须在规定的时间限制内完成响应" },
+      { "label": "C", "text": "RTOS 不支持多任务" },
+      { "label": "D", "text": "RTOS 的内核占用空间更小" }
+    ],
+    "answer": "B",
+    "explanation": "实时系统的核心是时间约束——必须在 deadline 之前完成响应，否则可能导致系统失效。分时系统追求公平性和响应时间，但无硬性时间约束。",
+    "tags": ["os-intro", "rtos", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-15",
+    "title": "ABI 兼容",
+    "question": "如果一个二进制可执行文件可以在两个不同的操作系统上直接运行（无需重新编译），说明这两个操作系统具有什么兼容性？",
+    "options": [
+      { "label": "A", "text": "API 兼容" },
+      { "label": "B", "text": "ABI 兼容" },
+      { "label": "C", "text": "源码兼容" },
+      { "label": "D", "text": "指令集兼容" }
+    ],
+    "answer": "B",
+    "explanation": "ABI（Application Binary Interface）定义了二进制接口规范（系统调用号、调用约定、可执行文件格式、寄存器使用等）。ABI 兼容意味着二进制程序可直接运行。API 兼容仅保证源码可编译。",
+    "tags": ["os-intro", "abi", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-16",
+    "title": "RAID 5 特性",
+    "question": "关于 RAID 5，以下说法正确的是？",
+    "options": [
+      { "label": "A", "text": "RAID 5 至少需要 2 块磁盘" },
+      { "label": "B", "text": "RAID 5 使用镜像方式实现冗余" },
+      { "label": "C", "text": "RAID 5 使用分布式奇偶校验，能容忍 1 块磁盘故障" },
+      { "label": "D", "text": "RAID 5 与 RAID 0 的冗余能力相同" }
+    ],
+    "answer": "C",
+    "explanation": "RAID 5 使用分布式奇偶校验，至少需要 3 块磁盘，奇偶校验信息分布在所有磁盘上（消除写瓶颈），能容忍 1 块磁盘故障。RAID 0 无冗余，RAID 1 使用镜像。",
+    "tags": ["disk", "raid", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-17",
+    "title": "IPC 性能比较",
+    "question": "在以下 IPC 方式中，通常哪种方式的数据传输速度最快？",
+    "options": [
+      { "label": "A", "text": "管道（Pipe）" },
+      { "label": "B", "text": "消息队列（Message Queue）" },
+      { "label": "C", "text": "共享内存（Shared Memory）" },
+      { "label": "D", "text": "套接字（Socket）" }
+    ],
+    "answer": "C",
+    "explanation": "共享内存是最快的 IPC 方式，因为数据交换不需要内核介入复制——进程直接读写同一块物理内存。其他方式（管道、消息队列、套接字）都需要内核参与数据的复制和传递。",
+    "tags": ["ipc", "shared-memory", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-18",
+    "title": "文件物理结构选择",
+    "question": "以下哪种文件物理结构最适合大文件的随机访问？",
+    "options": [
+      { "label": "A", "text": "连续文件（Contiguous）" },
+      { "label": "B", "text": "链接文件（Linked）" },
+      { "label": "C", "text": "索引文件（Indexed）" },
+      { "label": "D", "text": "以上都不适合" }
+    ],
+    "answer": "C",
+    "explanation": "索引文件通过索引表直接定位到任意数据块，无需遍历链表，随机访问效率高。连续文件在顺序访问时效率最高但不利于随机访问和动态修改。链接文件随机访问需沿链遍历，效率低。",
+    "tags": ["filesystem", "file-structure", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fr-19",
+    "title": "死锁预防策略",
+    "question": "死锁预防（Deadlock Prevention）的基本思路是什么？",
+    "options": [
+      { "label": "A", "text": "允许死锁发生，然后检测并恢复" },
+      { "label": "B", "text": "在运行时动态判断资源分配是否安全" },
+      { "label": "C", "text": "破坏死锁产生的四个必要条件之一或多个" },
+      { "label": "D", "text": "忽略死锁问题，假设它不会发生" }
+    ],
+    "answer": "C",
+    "explanation": "死锁预防通过破坏互斥、占有并等待、不可剥夺、循环等待这四个必要条件之一来防止死锁。例如，一次性分配所有资源破坏"占有并等待"条件，或对资源排序破坏"循环等待"条件。",
+    "tags": ["deadlock", "prevention", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fr-20",
+    "title": "死锁避免的特征",
+    "question": "关于死锁避免（Deadlock Avoidance），以下说法正确的是？",
+    "options": [
+      { "label": "A", "text": "死锁避免是静态策略" },
+      { "label": "B", "text": "银行家算法是死锁避免算法" },
+      { "label": "C", "text": "死锁避免不需要预知进程的最大资源需求" },
+      { "label": "D", "text": "死锁避免通过破坏互斥条件来实现" }
+    ],
+    "answer": "B",
+    "explanation": "死锁避免是动态策略，在系统运行过程中判断每次资源分配是否会导致不安全状态。银行家算法是最经典的死锁避免算法，需要预知每个进程的最大资源需求。死锁避免不破坏必要条件（那是预防的策略）。",
+    "tags": ["deadlock", "avoidance", "banker", "exam"],
+    "difficulty": "medium"
+  }
+]

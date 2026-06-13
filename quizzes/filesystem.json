@@ -1,0 +1,167 @@
+[
+  {
+    "id": "fs-concept-01",
+    "title": "文件的本质",
+    "question": "Unix 的"一切皆文件"设计思想意味着什么？",
+    "options": [
+      { "label": "A", "text": "文件是一组字节序列，常规文件、目录、I/O 设备、管道等都可以被视为文件并通过统一接口操作" },
+      { "label": "B", "text": "所有文件必须存储在磁盘上" },
+      { "label": "C", "text": "文件系统只能管理文本文件" },
+      { "label": "D", "text": "每个文件都必须有独立的物理设备" }
+    ],
+    "answer": "A",
+    "explanation": "Unix 将文件抽象为一组带标识的字节序列。常规文件、目录（也是一种文件）、I/O 设备、管道等都可以通过统一的 open/read/write/close 接口操作，极大简化了编程模型。",
+    "tags": ["filesystem", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fs-physical-contiguous-01",
+    "title": "连续文件结构",
+    "question": "关于文件的连续（顺序）物理结构，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "文件在磁盘上连续存放，顺序和随机存取效率都很高，但不利于动态扩展" },
+      { "label": "B", "text": "使用链接字指向下一块的物理地址" },
+      { "label": "C", "text": "通过索引表实现逻辑块号到物理块号的映射" },
+      { "label": "D", "text": "每个磁盘块都包含一个指向下一块的指针" }
+    ],
+    "answer": "A",
+    "explanation": "连续结构将文件在磁盘上连续存放，存取第 i 块只需起始块号 + i，顺序和随机存取效率都很高。但文件长度不易改变，不利于动态增删，容易产生磁盘碎片。",
+    "tags": ["filesystem", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fs-physical-compare-01",
+    "title": "三种物理结构对比",
+    "question": "对于需要频繁随机访问的大文件，最适合的文件物理结构是哪种？",
+    "options": [
+      { "label": "A", "text": "连续结构" },
+      { "label": "B", "text": "链接结构" },
+      { "label": "C", "text": "索引结构" },
+      { "label": "D", "text": "以上都不适合" }
+    ],
+    "answer": "C",
+    "explanation": "索引结构通过索引表直接定位任意数据块，不需遍历链表，随机访问效率最高。连续结构适合顺序访问，链接结构随机访问需沿链表遍历效率低。",
+    "tags": ["filesystem", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fs-index-calc-01",
+    "title": "索引节点最大文件计算",
+    "question": "某文件系统的 inode 中设有 10 个直接索引、1 个一次间接索引、1 个二次间接索引。文件块大小为 s 字节，块号占用 t 字节。该文件系统支持的最大文件大小是多少？",
+    "options": [
+      { "label": "A", "text": "[10 + (s/t) + (s/t)²] × s 字节" },
+      { "label": "B", "text": "(10 + s + s²) × t 字节" },
+      { "label": "C", "text": "10 × s 字节" },
+      { "label": "D", "text": "[(s/t) + (s/t)²] × s 字节" }
+    ],
+    "answer": "A",
+    "explanation": "直接索引：10 块。一次间接索引：一个数据块存 s/t 个块号，指向 s/t 个数据块。二次间接索引：一个数据块存 s/t 个一级索引块号，每个一级索引块又指向 s/t 个数据块，共 (s/t)² 个数据块。最大文件 = [10 + s/t + (s/t)²] × s 字节。",
+    "tags": ["filesystem", "inode", "calculation", "exam"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "fs-hardlink-01",
+    "title": "硬链接与软链接",
+    "question": "关于硬链接和软链接（符号链接），下列说法错误的是？",
+    "options": [
+      { "label": "A", "text": "硬链接指向同一个 inode，不能跨文件系统；软链接存储目标路径，可以跨文件系统" },
+      { "label": "B", "text": "删除源文件后，软链接会失效" },
+      { "label": "C", "text": "硬链接可以链接目录" },
+      { "label": "D", "text": "软链接本身是一个独立的特殊文件" }
+    ],
+    "answer": "C",
+    "explanation": "硬链接通常不能链接目录（防止形成循环目录结构），只能链接文件。软链接可以链接目录。A、B、D 均正确：硬链接共享同一 inode 且受限于同一文件系统；软链接存储路径字符串，删源文件后失效。",
+    "tags": ["filesystem", "link", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fs-directory-01",
+    "title": "目录结构",
+    "question": "关于单级目录和多级目录，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "单级目录结构简单但存在命名冲突；多级目录层次清晰、可解决重名问题，但路径过深会增加检索时间" },
+      { "label": "B", "text": "单级目录比多级目录更便于文件共享" },
+      { "label": "C", "text": "多级目录一定能加快所有文件的查找速度" },
+      { "label": "D", "text": "单级目录不存在任何缺点" }
+    ],
+    "answer": "A",
+    "explanation": "单级目录结构简单，但文件多时检索慢、有命名冲突、不便于共享。多级目录层次清晰，每级只查找一个子集，但目录级别太多时路径检索时间增加。二者各有适用场景。",
+    "tags": ["filesystem", "directory", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fs-fat-01",
+    "title": "FAT 文件系统",
+    "question": "FAT 文件系统的本质是什么？",
+    "options": [
+      { "label": "A", "text": "将链接指针集中存放在 FAT 表中的链接分配方式" },
+      { "label": "B", "text": "使用 inode 和多级间接索引的文件系统" },
+      { "label": "C", "text": "基于日志结构的文件系统" },
+      { "label": "D", "text": "纯连续分配的文件系统" }
+    ],
+    "answer": "A",
+    "explanation": "FAT（File Allocation Table）将链接指针从数据块中提取出来集中存放。目录项记录起始簇号，FAT 表项记录下一簇位置。本质仍然是链接分配，但集中存储使 FAT 可以常驻内存，提高了查找效率。",
+    "tags": ["filesystem", "fat", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fs-ext2-01",
+    "title": "Ext2 块组设计",
+    "question": "Ext2 将磁盘划分为多个块组（block group）的主要目的是什么？",
+    "options": [
+      { "label": "A", "text": "让 inode 和文件数据块尽量靠近，减少寻道距离" },
+      { "label": "B", "text": "每个块组只能存放一种类型的文件" },
+      { "label": "C", "text": "减少磁盘总容量" },
+      { "label": "D", "text": "取消 inode 位图" }
+    ],
+    "answer": "A",
+    "explanation": "Ext2 将磁盘划分为块组，每个块组包含各自的 inode 表、数据块位图、inode 位图和数据块。目的是将 inode 和相关数据块放在邻近物理位置，减少磁头寻道距离，提高访问性能。",
+    "tags": ["filesystem", "ext2", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fs-lfs-01",
+    "title": "LFS 日志结构文件系统",
+    "question": "LFS（Log-Structured File System）的核心设计思想是什么？",
+    "options": [
+      { "label": "A", "text": "把大量零散随机写合并为一次较大的顺序写，以 segment 为单位追加到磁盘末尾" },
+      { "label": "B", "text": "所有写入都先写入内存，然后批量回写" },
+      { "label": "C", "text": "使用更大的磁盘块提高传输效率" },
+      { "label": "D", "text": "将所有文件数据加密存储" }
+    ],
+    "answer": "A",
+    "explanation": "LFS 的核心思想是变随机写为顺序写：修改内容先缓存在 segment 中，满后整体顺序追加到磁盘末尾，不覆盖旧版本。通过 imap 定位最新 inode 位置，旧 segment 由 cleaner 进行垃圾回收。",
+    "tags": ["filesystem", "lfs", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "fs-consistency-01",
+    "title": "文件系统一致性",
+    "question": "文件系统一致性检查通常关注哪些方面？",
+    "options": [
+      { "label": "A", "text": "磁盘块一致性（块在文件中和空闲队列中出现次数应一致）和文件一致性（inode 引用次数与目录引用次数应一致）" },
+      { "label": "B", "text": "只检查文件名是否合法" },
+      { "label": "C", "text": "只检查磁盘是否有坏道" },
+      { "label": "D", "text": "只检查用户权限设置" }
+    ],
+    "answer": "A",
+    "explanation": "文件系统一致性检查有两个维度：(1) 磁盘块一致性——每块在文件中的出现次数应与空闲队列中出现次数一致；(2) 文件一致性——inode 被引用次数应与目录中引用该文件的次数一致。",
+    "tags": ["filesystem", "consistency", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "fs-access-step-01",
+    "title": "索引文件访问步骤",
+    "question": "在 Linux 下读取 /tmp/hello 文件，已知根目录 inode 已在内存中。正确的访问步骤顺序是什么？",
+    "options": [
+      { "label": "A", "text": "读根目录内容获取 tmp 的 inode → 读 tmp 的 inode → 读 tmp 目录获取 hello 的 inode → 读 hello 的 inode → 读 hello 数据" },
+      { "label": "B", "text": "直接读取 /tmp/hello 的文件内容" },
+      { "label": "C", "text": "先读 hello 的数据，再找到它的 inode" },
+      { "label": "D", "text": "只需要一步就能完成，因为根目录 inode 已在内存" }
+    ],
+    "answer": "A",
+    "explanation": "文件访问需要沿路径逐级解析：根目录内容 → tmp 的 inode 所在块 → tmp 的 inode → tmp 目录内容 → hello 的 inode 所在块 → hello 的 inode → hello 数据块。每一步都可能涉及磁盘 I/O。",
+    "tags": ["filesystem", "index", "exam"],
+    "difficulty": "medium"
+  }
+]

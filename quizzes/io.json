@@ -1,0 +1,152 @@
+[
+  {
+    "id": "io-device-classify-01",
+    "title": "块设备与字符设备",
+    "question": "关于块设备与字符设备的区分，下列说法最准确的是哪一项？",
+    "options": [
+      { "label": "A", "text": "块设备以数据块为单位传输，通常可寻址；字符设备以字符为单位传输，通常不可寻址" },
+      { "label": "B", "text": "键盘和鼠标属于块设备" },
+      { "label": "C", "text": "字符设备的传输速率一定高于块设备" },
+      { "label": "D", "text": "块设备只能顺序访问，不能随机访问" }
+    ],
+    "answer": "A",
+    "explanation": "块设备（如磁盘）以数据块为单位，可随机寻址，传输速率较高；字符设备（如键盘、打印机）以字符为单位，通常不可寻址，传输速率较低。",
+    "tags": ["io", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "io-address-mode-01",
+    "title": "内存映射 I/O 与独立编址",
+    "question": "关于内存映射 I/O（Memory-Mapped I/O）与 I/O 独立编址，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "内存映射 I/O 的缺点之一是寄存器内容不能被高速缓存，因为设备状态可能从外部变化" },
+      { "label": "B", "text": "I/O 独立编址可以复用原有访存指令，编程更灵活" },
+      { "label": "C", "text": "内存映射 I/O 会占用独立的 I/O 地址空间" },
+      { "label": "D", "text": "两种方式的优缺点完全相同" }
+    ],
+    "answer": "A",
+    "explanation": "内存映射 I/O 将设备寄存器映射到内存地址空间，可以复用访存指令和原有保护机制。但控制寄存器不能缓存，因为设备状态可能从外部独立变化。I/O 独立编址使用专用指令（如 in/out），不占用内存地址空间。",
+    "tags": ["io", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "io-control-pio-01",
+    "title": "程序控制 I/O",
+    "question": "程序控制 I/O（PIO）方式的主要特点是什么？",
+    "options": [
+      { "label": "A", "text": "CPU 发出 I/O 请求后不断轮询设备状态，直到 I/O 完成" },
+      { "label": "B", "text": "I/O 完成后设备主动发起中断通知 CPU" },
+      { "label": "C", "text": "由 DMA 控制器完成数据传输，CPU 完全不参与" },
+      { "label": "D", "text": "通过通道处理器独立执行通道程序完成 I/O" }
+    ],
+    "answer": "A",
+    "explanation": "PIO 是最简单的 I/O 方式：CPU 发出请求后忙等轮询状态寄存器。优点是实现简单，缺点是 CPU 占用时间很长。",
+    "tags": ["io", "exam"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "io-control-dma-01",
+    "title": "DMA 与中断驱动的区别",
+    "question": "DMA 方式与中断驱动方式的关键区别是什么？",
+    "options": [
+      { "label": "A", "text": "中断方式每传输一个单位数据就发一次中断；DMA 完成一批数据后才发一次中断" },
+      { "label": "B", "text": "DMA 不需要任何硬件支持" },
+      { "label": "C", "text": "中断方式的数据传输不需要 CPU 参与" },
+      { "label": "D", "text": "DMA 只能处理字符设备" }
+    ],
+    "answer": "A",
+    "explanation": "中断方式每个数据单位传输完毕就产生中断，CPU 介入传输；DMA 由 DMA 控制器在后台完成整批数据传输，仅在开始和结束时需要 CPU 干预，适合高速设备。",
+    "tags": ["io", "dma", "tricky", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "io-control-channel-01",
+    "title": "通道与 DMA 的区别",
+    "question": "I/O 通道相比 DMA 的进一步改进主要体现在哪里？",
+    "options": [
+      { "label": "A", "text": "通道可以执行通道程序，自主完成多组 I/O 操作，进一步减少 CPU 干预" },
+      { "label": "B", "text": "通道比 DMA 更便宜" },
+      { "label": "C", "text": "通道只能控制一台设备" },
+      { "label": "D", "text": "通道不需要任何寄存器" }
+    ],
+    "answer": "A",
+    "explanation": "DMA 像自动化机器，CPU 仍需设置地址、长度等参数；通道像专门负责操作设备的"员工"，CPU 只需准备好通道程序并启动，通道就能按计划完成多组 I/O 操作。一个通道还能控制多种设备。",
+    "tags": ["io", "channel", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "io-buffer-single-01",
+    "title": "单缓冲时间计算",
+    "question": "在单缓冲系统中，设 T 为设备传输一块数据的时间，C 为 CPU 处理一块数据的时间，M 为内存复制时间。系统处理每块数据的时间是多少？",
+    "options": [
+      { "label": "A", "text": "Max(C, T) + M" },
+      { "label": "B", "text": "C + T + M" },
+      { "label": "C", "text": "Max(C + M, T)" },
+      { "label": "D", "text": "Max(C, T + M)" }
+    ],
+    "answer": "A",
+    "explanation": "单缓冲中 C 和 T 可以并行（CPU 处理和设备传输同时进行），但 M 与 T 不能并行（都要访问缓冲区，发生读写冲突），M 与 C 也不能并行（都由 CPU 执行）。因此总时间为 Max(C, T) + M。",
+    "tags": ["io", "buffer", "calculation", "exam"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "io-buffer-double-01",
+    "title": "双缓冲的优势",
+    "question": "双缓冲相比单缓冲的主要优势是什么？",
+    "options": [
+      { "label": "A", "text": "双缓冲允许 M（内存复制）与 T（设备传输）并行，当 CPU 处理速度与设备速度接近时效果较好" },
+      { "label": "B", "text": "双缓冲完全消除了内存复制开销" },
+      { "label": "C", "text": "双缓冲不再需要缓冲区" },
+      { "label": "D", "text": "双缓冲让设备传输速度变为原来的两倍" }
+    ],
+    "answer": "A",
+    "explanation": "双缓冲设置两个缓冲区交替使用，使得 M 与 C、T 都可以并行，系统处理一块数据的时间约为 Max(M+C, T)。当 CPU 和外设处理速度接近时，可以使两者都连续工作无需等待。",
+    "tags": ["io", "buffer", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "io-spooling-01",
+    "title": "SPOOLing 技术",
+    "question": "关于 SPOOLing（假脱机）技术，下列说法正确的是？",
+    "options": [
+      { "label": "A", "text": "SPOOLing 可以将独占设备改造成具有共享特征的虚拟设备" },
+      { "label": "B", "text": "SPOOLing 的井（well）是内存中的一小块区域" },
+      { "label": "C", "text": "SPOOLing 技术不能提高设备利用率" },
+      { "label": "D", "text": "SPOOLing 只能用于输出设备，不能用于输入设备" }
+    ],
+    "answer": "A",
+    "explanation": "SPOOLing 通过输入/输出井（磁盘上的大存储空间）、输入/输出缓冲区和 SP$_i$/SP$_o$ 进程，将独占设备模拟为共享虚拟设备。井在磁盘上而非内存中（内存容量有限且昂贵），同时支持输入和输出。",
+    "tags": ["io", "spooling", "exam"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "io-model-compare-01",
+    "title": "I/O 模型对比",
+    "question": "关于阻塞 I/O、非阻塞 I/O 和异步 I/O，下列说法错误的是？",
+    "options": [
+      { "label": "A", "text": "阻塞 I/O 在 I/O 完成前进程被挂起" },
+      { "label": "B", "text": "非阻塞 I/O 在第一阶段立即返回，进程可以继续执行其他操作" },
+      { "label": "C", "text": "异步 I/O 在两个阶段（等待数据 + 拷贝数据）都不会阻塞进程" },
+      { "label": "D", "text": "I/O 多路复用允许同时等待多个 I/O 对象，但第二阶段是非阻塞的" }
+    ],
+    "answer": "D",
+    "explanation": "I/O 多路复用（如 select）第一阶段等待是非阻塞的（可以同时等待多个对象），但第二阶段将数据从内核拷贝到用户空间仍然是阻塞的。异步 I/O 是两个阶段都不阻塞的唯一模型。",
+    "tags": ["io", "model", "tricky", "exam"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "io-device-independence-01",
+    "title": "设备独立性",
+    "question": "实现设备独立性的关键机制是什么？",
+    "options": [
+      { "label": "A", "text": "通过逻辑设备表（LUT）将逻辑设备名映射为物理设备名" },
+      { "label": "B", "text": "所有设备使用相同的驱动程序" },
+      { "label": "C", "text": "禁止应用程序使用物理设备名" },
+      { "label": "D", "text": "所有设备都使用 DMA 方式" }
+    ],
+    "answer": "A",
+    "explanation": "设备独立性让应用程序只使用逻辑设备名，系统通过逻辑设备表（LUT）将逻辑设备名映射为物理设备名。这样当某设备忙或不可用时，系统可从同类设备中选择其他空闲设备。",
+    "tags": ["io", "exam"],
+    "difficulty": "easy"
+  }
+]
