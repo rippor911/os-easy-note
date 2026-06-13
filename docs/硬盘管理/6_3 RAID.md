@@ -18,7 +18,7 @@
 
 **数据分段：**把一个文件的数据分成多个条带写道多个硬盘，每个条带的大小可以按需调整
 
-![image-20260610215246997](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610215246997.png)
+<!-- TODO: 补充图片 -->
 
 ---
 
@@ -31,7 +31,7 @@
 
 并行存取到多个硬盘，但没有数据冗余
 
-![image-20260610220650287](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610220650287.png)
+<!-- TODO: 补充图片 -->
 
 #### RAID1
 
@@ -42,7 +42,7 @@
 
 单位成本最高，但提供了很高的数据安全性和可用性
 
-![image-20260610220717420](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610220717420.png)
+<!-- TODO: 补充图片 -->
 
 #### RAID 0+1 && RAID 1+0
 
@@ -54,7 +54,7 @@ RAID 1+0：先组成镜像对，再对镜像对做条带化。
 
 RAID 1+0 通常具有更好的故障容忍能力。
 
-![image-20260610220801169](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610220801169.png)
+<!-- TODO: 补充图片 -->
 
 #### RAID2
 
@@ -62,7 +62,7 @@ RAID 1+0 通常具有更好的故障容忍能力。
 
 海明码长度：$2^r≥r+d+1$($r$ 是冗余码位数，$d$ 是数据位数)
 
-![image-20260610221204245](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610221204245.png)
+<!-- TODO: 补充图片 -->
 
 将数据条带化分布于**不同的硬盘上**，使用海明码来提供错误检查及恢复
 
@@ -70,19 +70,19 @@ RAID 1+0 通常具有更好的故障容忍能力。
 
 [奇偶校验](#校验码)冗余
 
-![image-20260610221556228](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610221556228.png)
+<!-- TODO: 补充图片 -->
 
 其他等级可以自主了解，这里放出总表：
 
-![image-20260610221947867](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610221947867.png)
+<!-- TODO: 补充图片 -->
 
 ---
 
 ## 校验码
 
-![image-20260610221344321](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610221344321.png)
+<!-- TODO: 补充图片 -->
 
-![image-20260610221457268](C:/Users/rippor/AppData/Roaming/Typora/typora-user-images/image-20260610221457268.png)
+<!-- TODO: 补充图片 -->
 
 ## 复习题
 
