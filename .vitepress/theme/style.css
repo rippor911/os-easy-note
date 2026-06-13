@@ -365,45 +365,34 @@
   }
 }
 
-/* Sidebar toggle button */
+/* Sidebar toggle button — in navbar */
 .os-sidebar-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  margin: 0 0 4px 0;
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 6px;
-  background: var(--vp-c-bg-soft);
+  background: transparent;
   color: var(--vp-c-text-2);
-  font-size: 11px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
 }
 
 .os-sidebar-toggle:hover {
-  background: var(--vp-c-brand-1);
-  color: white;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
 }
 
 /* Collapsed sidebar state */
 html.os-sidebar-collapsed .VPSidebar {
-  width: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  border-right: none !important;
+  display: none;
 }
 
 html.os-sidebar-collapsed .VPDoc {
-  padding-left: 0 !important;
-}
-
-html.os-sidebar-collapsed .os-sidebar-toggle {
-  position: fixed;
-  top: 80px;
-  left: 4px;
-  z-index: 100;
-  background: var(--vp-c-bg);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  padding-left: 32px !important;
 }
