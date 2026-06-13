@@ -1,0 +1,7 @@
+﻿git : fatal: path 'docs/硬盘管理/6_2' does not exist in '92d1465'
+At line:14 char:1885
++ ... 1.txt 2>&1; git show 92d1465:docs/硬盘管理/6_2 磁盘的组织与调度.md > original_6_2 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: path 'do...st in '92d1465':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

@@ -13,7 +13,7 @@ function scheduleReadMark() {
   window.clearTimeout(timer)
 
   timer = window.setTimeout(() => {
-    const title = frontmatter.value.title || page.value.title || route.path
+    const title = frontmatter.value.title || page.value.title || decodeURIComponent(route.path)
     const rawTags = frontmatter.value.tags
     const tags = Array.isArray(rawTags) ? rawTags : rawTags ? String(rawTags).split(',') : []
 

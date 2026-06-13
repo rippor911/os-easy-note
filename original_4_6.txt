@@ -1,0 +1,7 @@
+﻿git : fatal: path 'docs/进程与线程/4_6' does not exist in '92d1465'
+At line:14 char:2219
++ ... 5.txt 2>&1; git show 92d1465:docs/进程与线程/4_6 调度.md > original_4_6.txt  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: path 'do...st in '92d1465':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

@@ -1,0 +1,7 @@
+﻿git : fatal: path 'docs/文件系统/7_1' does not exist in '92d1465'
+At line:14 char:2017
++ ... 3.txt 2>&1; git show 92d1465:docs/文件系统/7_1 文件系统基本概念.md > original_7_1 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: path 'do...st in '92d1465':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

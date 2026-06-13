@@ -1,0 +1,7 @@
+﻿git : fatal: path 'docs/IO管理/5_4' does not exist in '92d1465'
+At line:14 char:1684
++ ... 3.txt 2>&1; git show 92d1465:docs/IO管理/5_4 IO缓冲管理.md > original_5_4.t ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: path 'do...st in '92d1465':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
