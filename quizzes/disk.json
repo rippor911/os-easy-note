@@ -62,7 +62,7 @@
   {
     "id": "disk-schedule-sticky-01",
     "title": "磁臂黏着现象",
-    "question": ""磁臂黏着现象"是指什么？如何缓解？",
+    "question": "\u201c磁臂黏着现象\u201d是指什么？如何缓解？",
     "options": [
       { "label": "A", "text": "某磁道访问频率过高，垄断磁盘设备；N-Step-SCAN 和 FSCAN 可以缓解" },
       { "label": "B", "text": "磁头物理损坏无法移动" },
@@ -70,7 +70,7 @@
       { "label": "D", "text": "使用 SSTF 算法可以完全避免" }
     ],
     "answer": "A",
-    "explanation": "磁臂黏着是指某磁道持续收到大量请求，磁头被"黏"在该磁道附近，导致其他磁道的请求长期得不到服务。N-Step-SCAN（队列间 FCFS，队列内 SCAN）和 FSCAN（2-Step-SCAN）通过划分请求批次来缓解。",
+    "explanation": "磁臂黏着是指某磁道持续收到大量请求，磁头被\u201c黏\u201d在该磁道附近，导致其他磁道的请求长期得不到服务。N-Step-SCAN（队列间 FCFS，队列内 SCAN）和 FSCAN（2-Step-SCAN）通过划分请求批次来缓解。",
     "tags": ["disk", "scheduling", "tricky"],
     "difficulty": "medium"
   },
